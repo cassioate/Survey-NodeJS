@@ -1,3 +1,4 @@
+import { InternalServerError } from '../errors/internal-server-error'
 import { MissingParamError } from '../errors/missing-param-error'
 import { SignUpController } from './signup-controller'
 
@@ -66,5 +67,23 @@ describe('SignUp Controller', () => {
     const httpResponse = sut.handle(httpRequest)
     expect(httpResponse.statusCode).toBe(400)
     expect(httpResponse.body).toEqual(new MissingParamError('passwordConfirmation'))
+  })
+})
+
+describe('SignUp Controller', () => {
+  test('Should return 500 if an internal error occurs', () => {
+    const sut = new SignUpController()
+    const httpRequest = {
+      body: {
+        name: 'anyName',
+        email: 'anyEmail@email.com',
+        password: 'anyPass',
+        passwordConfirmation: 'anyPass'
+      }
+    }
+
+    const httpResponse = sut.handle(httpRequest)
+    expect(httpResponse.statusCode).toBe(500)
+    expect(httpResponse.body).toEqual(new InternalServerError())
   })
 })

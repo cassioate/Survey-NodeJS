@@ -1,8 +1,10 @@
+import { InternalServerError } from '../errors/internal-server-error'
 import { MissingParamError } from '../errors/missing-param-error'
-import { badRequest } from '../helpers/http-helper'
+import { badRequest, internalServerError } from '../helpers/http-helper'
+import { Controller } from '../protocols/controller'
 import { HttpRequest, HttpResponse } from '../protocols/http'
 
-export class SignUpController {
+export class SignUpController implements Controller {
   handle (httpRequest: HttpRequest): HttpResponse {
     const requiredFields = ['name', 'email', 'password', 'passwordConfirmation']
     for (const field of requiredFields) {
@@ -10,6 +12,6 @@ export class SignUpController {
         return badRequest(new MissingParamError(field))
       }
     }
-    return badRequest(new MissingParamError('Error'))
+    return internalServerError(new InternalServerError())
   }
 }
