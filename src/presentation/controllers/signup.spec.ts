@@ -112,6 +112,25 @@ describe('SignUp Controller', () => {
 })
 
 describe('SignUp Controller', () => {
+  test('Should return 400 if an invalid email is provided', () => {
+    const { sut, emailValidatorStub } = makeSut()
+    const isValidSpy = jest.spyOn(emailValidatorStub, 'isValid')
+
+    const httpRequest = {
+      body: {
+        name: 'anyName',
+        email: 'anyEmail@email.com',
+        password: 'anyPass',
+        passwordConfirmation: 'anyPass'
+      }
+    }
+
+    sut.handle(httpRequest)
+    expect(isValidSpy).toHaveBeenCalledWith('anyEmail@email.com')
+  })
+})
+
+describe('SignUp Controller', () => {
   test('Should return 500 if an internal error occurs', () => {
     const { sut } = makeSut()
 
