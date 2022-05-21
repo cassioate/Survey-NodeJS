@@ -1,6 +1,6 @@
 import { InternalServerError } from '../errors/internal-server-error'
 import { MissingParamError } from '../errors/missing-param-error'
-import { badRequest, internalServerError } from '../helpers/http-helper'
+import { badRequestFuncHttpHelper, internalServerErrorFuncHttpHelper } from '../helpers/http-helper'
 import { Controller } from '../protocols/controller'
 import { HttpRequest, HttpResponse } from '../protocols/http'
 import { EmailValidator } from '../protocols/email-validator'
@@ -14,15 +14,19 @@ export class SignUpController implements Controller {
   }
 
   handle (httpRequest: HttpRequest): HttpResponse {
-    const requiredFields = ['name', 'email', 'password', 'passwordConfirmation']
-    for (const field of requiredFields) {
-      if (!httpRequest.body[field]) {
-        return badRequest(new MissingParamError(field))
+    try {
+      const requiredFields = ['name', 'email', 'password', 'passwordConfirmation']
+      for (const field of requiredFields) {
+        if (!httpRequest.body[field]) {
+          return badRequestFuncHttpHelper(new MissingParamError(field))
+        }
       }
+      if (!this.emailValidator.isValid(httpRequest.body.email)) {
+        return badRequestFuncHttpHelper(new InvalidParamError('email'))
+      }
+    } catch (error) {
+      return internalServerErrorFuncHttpHelper(new InternalServerError())
     }
-    if (!this.emailValidator.isValid(httpRequest.body.email)) {
-      return badRequest(new InvalidParamError('email'))
-    }
-    return internalServerError(new InternalServerError())
+    return internalServerErrorFuncHttpHelper(Error())
   }
 }

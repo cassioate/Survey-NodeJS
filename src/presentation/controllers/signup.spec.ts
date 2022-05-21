@@ -131,8 +131,14 @@ describe('SignUp Controller', () => {
 })
 
 describe('SignUp Controller', () => {
-  test('Should return 500 if an internal error occurs', () => {
-    const { sut } = makeSut()
+  test('Should return 500 if EmalValidator throws', () => {
+    class EmailValidatorStub implements EmailValidator {
+      isValid (email: string): boolean {
+        throw Error()
+      }
+    }
+    const emailValidatorStub = new EmailValidatorStub()
+    const sut = new SignUpController(emailValidatorStub)
 
     const httpRequest = {
       body: {
