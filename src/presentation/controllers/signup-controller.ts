@@ -17,10 +17,11 @@ export class SignUpController implements Controller {
           return badRequestFuncHttpHelper(new MissingParamError(field))
         }
       }
-      if (httpRequest.body.password !== httpRequest.body.passwordConfirmation) {
+      const { email, password, passwordConfirmation } = httpRequest.body
+      if (password !== passwordConfirmation) {
         return badRequestFuncHttpHelper(new InvalidParamError('passwordConfirmation'))
       }
-      if (!this.emailValidator.isValid(httpRequest.body.email)) {
+      if (!this.emailValidator.isValid(email)) {
         return badRequestFuncHttpHelper(new InvalidParamError('email'))
       }
     } catch (error) {
