@@ -1,5 +1,5 @@
 import { InternalServerError, InvalidParamError, MissingParamError } from '../../errors/index'
-import { badRequestFuncHttpHelper, internalServerErrorFuncHttpHelper, successFuncHttpHelper } from '../../helpers/http-helper'
+import { httpBadRequest, httpOk, httpServerError } from '../../helpers/http-helper'
 import { HttpRequest, HttpResponse, EmailValidator, Controller, AddAccount } from './signup-protocols'
 
 export class SignUpController implements Controller {
@@ -16,24 +16,24 @@ export class SignUpController implements Controller {
       const requiredFields = ['name', 'email', 'password', 'passwordConfirmation']
       for (const field of requiredFields) {
         if (!httpRequest.body[field]) {
-          return badRequestFuncHttpHelper(new MissingParamError(field))
+          return httpBadRequest(new MissingParamError(field))
         }
       }
       const { name, email, password, passwordConfirmation } = httpRequest.body
       if (password !== passwordConfirmation) {
-        return badRequestFuncHttpHelper(new InvalidParamError('passwordConfirmation'))
+        return httpBadRequest(new InvalidParamError('passwordConfirmation'))
       }
       if (!this.emailValidator.isValid(email)) {
-        return badRequestFuncHttpHelper(new InvalidParamError('email'))
+        return httpBadRequest(new InvalidParamError('email'))
       }
       const account = this.addAccount.add({
         name,
         email,
         password
       })
-      return successFuncHttpHelper(account)
+      return httpOk(account)
     } catch (error) {
-      return internalServerErrorFuncHttpHelper(new InternalServerError())
+      return httpServerError(new InternalServerError())
     }
   }
 }
