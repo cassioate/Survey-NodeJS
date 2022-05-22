@@ -1,5 +1,5 @@
 import { InternalServerError, InvalidParamError, MissingParamError } from '../../errors/index'
-import { badRequestFuncHttpHelper, internalServerErrorFuncHttpHelper } from '../../helpers/http-helper'
+import { badRequestFuncHttpHelper, internalServerErrorFuncHttpHelper, successFuncHttpHelper } from '../../helpers/http-helper'
 import { HttpRequest, HttpResponse, EmailValidator, Controller, AddAccount } from './signup-protocols'
 
 export class SignUpController implements Controller {
@@ -26,14 +26,14 @@ export class SignUpController implements Controller {
       if (!this.emailValidator.isValid(email)) {
         return badRequestFuncHttpHelper(new InvalidParamError('email'))
       }
-      this.addAccount.add({
+      const account = this.addAccount.add({
         name,
         email,
         password
       })
+      return successFuncHttpHelper(account)
     } catch (error) {
       return internalServerErrorFuncHttpHelper(new InternalServerError())
     }
-    return internalServerErrorFuncHttpHelper(Error())
   }
 }

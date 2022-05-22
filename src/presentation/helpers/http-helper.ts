@@ -9,3 +9,8 @@ export const internalServerErrorFuncHttpHelper = (error: Error): HttpResponse =>
   statusCode: 500,
   body: error
 })
+
+export const successFuncHttpHelper = (body: any): HttpResponse => ({
+  statusCode: 200,
+  body: body
+})
