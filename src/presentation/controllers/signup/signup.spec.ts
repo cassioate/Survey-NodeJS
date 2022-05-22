@@ -17,7 +17,7 @@ const makeAddAccount = (): AddAccount => {
       const fakeAccount = {
         id: 'valid_id',
         name: 'valid_name',
-        email: 'valid_email',
+        email: 'valid_email@mail.com',
         password: 'valid_password'
       }
       // return Promise.resolve(fakeAccount)
@@ -96,7 +96,7 @@ describe('SignUp Controller', () => {
 })
 
 describe('SignUp Controller', () => {
-  test('Should return 400 if no passwordConfirmation is provided', async () => {
+  test('Should return 400 if no password confirmation is provided', async () => {
     const { sut } = makeSut()
     const httpRequest = {
       body: {
@@ -133,7 +133,7 @@ describe('SignUp Controller', () => {
 })
 
 describe('SignUp Controller', () => {
-  test('Should return 400 if an invalid email is provided', async () => {
+  test('Should call EmailValidator with correct email', async () => {
     const { sut, emailValidatorStub } = makeSut()
     const isValidSpy = jest.spyOn(emailValidatorStub, 'isValid')
 
@@ -170,7 +170,7 @@ describe('SignUp Controller', () => {
 })
 
 describe('SignUp Controller', () => {
-  test('Should return 500 if EmalValidator throws', async () => {
+  test('Should return 500 if EmailValidator throws', async () => {
     const { sut, emailValidatorStub } = makeSut()
     jest.spyOn(emailValidatorStub, 'isValid').mockImplementation(() => {
       throw new Error()
@@ -194,8 +194,8 @@ describe('SignUp Controller', () => {
 describe('SignUp Controller', () => {
   test('Should return 500 if addAccount throws', async () => {
     const { sut, addAccountStub } = makeSut()
-    jest.spyOn(addAccountStub, 'add').mockImplementation(() => {
-      throw new Error()
+    jest.spyOn(addAccountStub, 'add').mockImplementation(async () => {
+      return new Promise((resolve, reject) => reject(new Error()))
     })
 
     const httpRequest = {
@@ -232,5 +232,25 @@ describe('SignUp Controller', () => {
       email: 'anyEmail@email.com',
       password: 'anyPass'
     })
+  })
+})
+
+test('Should return 200 if valid data is provided', async () => {
+  const { sut } = makeSut()
+  const httpRequest = {
+    body: {
+      name: 'valid_name',
+      email: 'valid_email@mail.com',
+      password: 'valid_password',
+      passwordConfirmation: 'valid_password'
+    }
+  }
+  const httpResponse = await sut.handle(httpRequest)
+  expect(httpResponse.statusCode).toBe(200)
+  expect(httpResponse.body).toEqual({
+    id: 'valid_id',
+    name: 'valid_name',
+    email: 'valid_email@mail.com',
+    password: 'valid_password'
   })
 })
