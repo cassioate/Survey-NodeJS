@@ -5,10 +5,13 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --silent --noStackTrace --runInBand --no-cache",
+    "test:watch": "jest --watch --silent --noStackTrace --runInBand --no-cache",
     "test:stack": "jest --passWithNoTests --silent --runInBand",
     "test:verbose": "jest --passWithNoTests",
-    "test:unit": "npm test -- --watch -c jest-unit-config.js",
-    "test:integration": "npm test -- --watch -c jest-integration-config.js",
+    "test:unit": "npm test -- -c jest-unit-config.js",
+    "test:unit:watch": "npm test -- --watch -c jest-unit-config.js",
+    "test:integration": "npm test -- -c jest-integration-config.js",
+    "test:integration:watch": "npm test -- --watch -c jest-integration-config.js",
     "test:staged": "npm test -- --findRelatedTests",
     "test:ci": "npm test -- --coverage"
   },
