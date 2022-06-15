@@ -19,6 +19,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
     "@types/jest": "^24.0.25",
     "@types/node": "^13.1.6",
     "@types/validator": "^13.7.2",
@@ -37,6 +38,7 @@
     "typescript": "^3.7.4"
   },
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "validator": "^13.7.0"
   }
 }
