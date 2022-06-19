@@ -7,7 +7,7 @@ import { DbAddAccount } from './db-add-account'
 const makeEncrypterSut = (): Encrypter => {
   class EncrypterStub implements Encrypter {
     async encrypt (value: string): Promise<string> {
-      return Promise.resolve('hashed_password')
+      return 'hashed_password'
     }
   }
   return new EncrypterStub()
@@ -20,7 +20,7 @@ const makeAddAccountRepository = (): AddAccountRepository => {
         id: 'id_valid',
         ...value
       }
-      return Promise.resolve(account)
+      return account
     }
   }
   return new AddAccountRepositoryStub()

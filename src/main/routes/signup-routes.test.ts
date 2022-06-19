@@ -14,11 +14,11 @@ describe('SignUp Routes', () => {
   })
 
   beforeEach(async () => {
-    const accountCollection = MongoHelper.getCollection('accounts')
+    const accountCollection = await MongoHelper.getCollection('accounts')
     await accountCollection.deleteMany({})
   })
   test('Should return an account on success', async () => {
-    await request(app)
+    const value = await request(app)
       .post('/api/signup')
       .send({
         name: 'cassioTeste',
@@ -27,5 +27,8 @@ describe('SignUp Routes', () => {
         passwordConfirmation: '123456'
       })
       .expect(200)
+    expect(value.body.name).toEqual('cassioTeste')
+    expect(value.body.email).toEqual('cassio@gmail.com')
+    expect(value.body.password).toBeTruthy()
   })
 })
