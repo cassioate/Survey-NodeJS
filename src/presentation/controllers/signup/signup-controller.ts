@@ -33,7 +33,7 @@ export class SignUpController implements Controller {
       })
       return httpOk(account)
     } catch (error) {
-      return httpServerError(new InternalServerError())
+      return httpServerError(new InternalServerError(error.stack))
     }
   }
 }
