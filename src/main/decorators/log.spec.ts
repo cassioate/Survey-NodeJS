@@ -97,8 +97,7 @@ describe('Log Decorator', () => {
       return internalError
     })
     const spyOnLogErrorRepositoryStub = jest.spyOn(logErrorRepositoryStub, 'logError')
-    const result = await sut.handle(makeFakeHttpRequest())
-    console.log(result)
+    await sut.handle(makeFakeHttpRequest())
     expect(spyOnLogErrorRepositoryStub).toHaveBeenCalledWith('any_stack_error')
   })
 })
