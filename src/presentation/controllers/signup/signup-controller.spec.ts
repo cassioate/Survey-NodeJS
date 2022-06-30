@@ -1,5 +1,5 @@
-import { httpBadRequest } from '../../../presentation/helpers/http-helper'
-import { Validation } from '../../../presentation/helpers/validators/interface/validation'
+import { httpBadRequest } from '../../helpers/http/http-helper'
+import { Validation } from '../../protocols/validation'
 import { InternalServerError, MissingParamError } from '../../errors'
 import { SignUpController } from './signup-controller'
 import { AccountModel, AddAccount, AddAccountModel, HttpRequest } from './signup-protocols'

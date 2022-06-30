@@ -1,7 +1,7 @@
-import { Validation } from '../../helpers/validators/interface/validation'
+import { Validation } from '../../protocols/validation'
 import { Authentication } from '../../../domain/usecases/add-account/authentication'
 import { InternalServerError } from '../../../presentation/errors'
-import { httpBadRequest, httpOk, httpServerError, httpUnauthorized } from '../../../presentation/helpers/http-helper'
+import { httpBadRequest, httpOk, httpServerError, httpUnauthorized } from '../../helpers/http/http-helper'
 import { Controller, HttpRequest, HttpResponse } from '../signup/signup-protocols'
 
 export class LoginController implements Controller {
@@ -20,7 +20,10 @@ export class LoginController implements Controller {
         return httpBadRequest(error)
       }
       const { email, password } = httpRequest.body
-      const accessToken = await this.authentication.auth(email, password)
+      const accessToken = await this.authentication.auth({
+        email,
+        password
+      })
       if (!accessToken) {
         return httpUnauthorized()
       }

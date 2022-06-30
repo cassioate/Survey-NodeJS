@@ -1,6 +1,6 @@
-import { Validation } from '../../helpers/validators/interface/validation'
+import { Validation } from '../../protocols/validation'
 import { InternalServerError } from '../../errors/index'
-import { httpBadRequest, httpOk, httpServerError } from '../../helpers/http-helper'
+import { httpBadRequest, httpOk, httpServerError } from '../../helpers/http/http-helper'
 import { HttpRequest, HttpResponse, Controller, AddAccount } from './signup-protocols'
 
 export class SignUpController implements Controller {
