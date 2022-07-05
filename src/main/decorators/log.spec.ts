@@ -1,8 +1,8 @@
-import { LogErrorRepository } from '@/data/protocols/log-error-repository'
+import { LogErrorRepository } from '../../data/protocols/db/log-error-repository'
 import { InternalServerError } from '../../presentation/errors/index'
-import { Controller, HttpRequest, HttpResponse } from '@/presentation/protocols'
+import { Controller, HttpRequest, HttpResponse } from '../../presentation/protocols'
 import { LogControllerDecorator } from './log'
-import { httpServerError } from '../../presentation/helpers/http-helper'
+import { httpServerError } from '../../presentation/helpers/http/http-helper'
 
 const makeControllerStub = (): Controller => {
   class ControllerStub implements Controller {
@@ -97,8 +97,7 @@ describe('Log Decorator', () => {
       return internalError
     })
     const spyOnLogErrorRepositoryStub = jest.spyOn(logErrorRepositoryStub, 'logError')
-    const result = await sut.handle(makeFakeHttpRequest())
-    console.log(result)
+    await sut.handle(makeFakeHttpRequest())
     expect(spyOnLogErrorRepositoryStub).toHaveBeenCalledWith('any_stack_error')
   })
 })
