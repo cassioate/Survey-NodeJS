@@ -48,7 +48,7 @@ const makeTokenGeneratorStub = (): TokenGenerator => {
 
 const makeUpdateAccessTokenRepositoryStub = (): UpdateAccessTokenRepository => {
   class UpdateAccessTokenRepositoryStub implements UpdateAccessTokenRepository {
-    async updateAccessToken (accountId: string, acessToken: string): Promise<void> {
+    async updateAccessToken (accountId: string, accessToken: string): Promise<void> {
     }
   }
   return new UpdateAccessTokenRepositoryStub()
@@ -156,9 +156,9 @@ describe('DbAuthentication UserCase', () => {
 
   test('Should call updateAccessTokenRepositoryStub with correct values', async () => {
     const { sut, updateAccessTokenRepositoryStub } = makeSut()
-    const loadAcessToken = jest.spyOn(updateAccessTokenRepositoryStub, 'updateAccessToken')
+    const loadAccessToken = jest.spyOn(updateAccessTokenRepositoryStub, 'updateAccessToken')
     await sut.auth(makeFakeAuthentication())
-    expect(loadAcessToken).toHaveBeenCalledWith('any_id', 'token_authenticated')
+    expect(loadAccessToken).toHaveBeenCalledWith('any_id', 'token_authenticated')
   })
 
   test('Should throw if updateAccessTokenRepositoryStub throws', async () => {
