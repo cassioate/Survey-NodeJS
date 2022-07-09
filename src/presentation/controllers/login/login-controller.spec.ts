@@ -1,7 +1,7 @@
 import { Authentication, AuthenticationModel } from '../../../domain/usecases/add-account/authentication'
-import { MissingParamError, UnauthorizedError } from '../../../presentation/errors'
+import { MissingParamError, UnauthorizedError } from '../../errors'
 import { HttpRequest, HttpResponse } from '../signup/signup-protocols'
-import { LoginController } from './login'
+import { LoginController } from './login-controller'
 import { Validation } from '../../protocols/validation'
 import { httpBadRequest } from '../../helpers/http/http-helper'
 
