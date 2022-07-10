@@ -17,7 +17,7 @@ describe('Jwt Adapter', () => {
     const sut = makeSut('secret')
     const spyOnJwt = jest.spyOn(jwt, 'sign')
     await sut.generate('any_id')
-    expect(spyOnJwt).toBeCalledWith('any_id', 'secret')
+    expect(spyOnJwt).toBeCalledWith({ id: 'any_id' }, 'secret')
   })
 
   test('Should throw if sign throws', async () => {
