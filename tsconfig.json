@@ -4,14 +4,20 @@
     "module": "commonjs",
     "target": "es2019",
     "esModuleInterop": true,
-    //Comandos para criar atalhos no import com o @/...
+
+    // Mapeia os arquivos que serão gerados no ./dist para os arquivos .ts dentro de src, facilitando assim o debug
+    // O sourceMap não funcionou, e causou bug na aplicação, então tive que usar o inlineSourcemap
+    "inlineSourceMap": true,
     // "sourceMap": true,
+
+    //Comandos para criar atalhos no import com o @/...
     // "rootDirs": ["src", "tests"],
     // "baseUrl": "src",
     // "paths": {
     //   "@/tests/*": ["../tests/*"],
     //   "@/*": ["*"]
     // }
+    
   },
   "include": [
     "src"

@@ -1,4 +1,4 @@
-version: '3'
+version: '3.7'
 
 networks:
   api-networks:
@@ -7,13 +7,14 @@ networks:
 services:
   mongo:
     container_name: mongo-container
-    image: mongo:3
-    restart: always
+    image: mongo:4
     # No docker compose o campo volume dentro do container, tem que ser absoluto, então nao posso usar apenas "./"
     volumes:
-      - ./data:/data/db
+      - mongodata:/data/db
+    restart: always
+    ## 27018 sendo usado para o localhost do meu desktop, evitando conflito com meu mongo local
     ports:
-      - 27017:27017
+      - 27018:27017
     #healthcheck:
       #test: ["CMD","mongo", "--eval", "db.adminCommand('ping')"]
      # interval: 10s
@@ -30,15 +31,21 @@ services:
     restart: always 
     # quando voce utilizar o "BUILD: .", para poder renomear o container vc tem que utilizar o "image:", ou entao ele ficara com nome aleatorio
     image: clean-node-api
-    command: yarn start
+    command: yarn debug
     # Usar o volume no compose no lugar do dockerfile, por causa do cache, aqui ele sempre vai atualizar o dist quando ele for modificado, 
     # ja no dockerfile, pode acabar nao ataulizando por causa do cache
     volumes:
       - ./dist:/usr/src/clean-node-api/dist
+      - ./package.json:/usr/src/clean-node-api/package.json
     ports:
       - 5050:5050
+      ## Porta utilizada para debug da aplicação
+      - 9222:9222
     #depends_on:
       #mongo:
         #condition: service_healthy
     networks: 
-      - api-networks      
+      - api-networks
+
+volumes:
+  mongodata:
