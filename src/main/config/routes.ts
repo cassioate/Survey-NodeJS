@@ -7,6 +7,9 @@ export default (app: Express): void => {
   const router = Router()
   app.use(router)
 
+  // -------- SEE THIS COMMENT --------
+  // the three code below worked, but the third is the better way
+
   // // eslint-disable-next-line node/no-path-concat
   // readdirSync(`${__dirname}/../routes`).map(async file => {
   //   if (!file.includes('.test.')) {
