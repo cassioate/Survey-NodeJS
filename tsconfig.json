@@ -4,6 +4,14 @@
     "module": "commonjs",
     "target": "es2019",
     "esModuleInterop": true,
+    //Comandos para criar atalhos no import com o @/...
+    // "sourceMap": true,
+    // "rootDirs": ["src", "tests"],
+    // "baseUrl": "src",
+    // "paths": {
+    //   "@/tests/*": ["../tests/*"],
+    //   "@/*": ["*"]
+    // }
   },
   "include": [
     "src"
