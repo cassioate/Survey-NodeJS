@@ -14,6 +14,10 @@ export default (app: Express): void => {
   //   }
   // })
 
+  // FastGlob.sync('**/src/main/routes/**routes.ts').map(async file => {
+  //   (await import(`../../../${file}`)).default(router)
+  // })
+
   readdirSync(path.join(__dirname, '/../routes')).map(async file => {
     if (!file.includes('.test.')) {
       (await import(`../routes/${file}`)).default(router)
