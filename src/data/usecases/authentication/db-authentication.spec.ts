@@ -1,5 +1,5 @@
-import { HashComparer } from '@/data/protocols/criptography/hash-comparer'
-import { TokenGenerator } from '@/data/protocols/criptography/token-generator'
+import { HashComparer } from '../../../data/protocols/criptography/hash-comparer'
+import { TokenGenerator } from '../../../data/protocols/criptography/token-generator'
 import { UpdateAccessTokenRepository } from '../../../data/protocols/db/db-account/update-access-token-repository'
 import { LoadAccountByEmailRepository } from '../../../data/protocols/db/db-account/load-account-by-email-repository'
 import { AccountModel } from '../../../domain/models/account'

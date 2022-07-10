@@ -1,6 +1,6 @@
 import { Encrypter } from '../../../data/protocols/criptography/encrypter'
 import bcrypt from 'bcrypt'
-import { HashComparer } from '@/data/protocols/criptography/hash-comparer'
+import { HashComparer } from '../../../data/protocols/criptography/hash-comparer'
 
 export class BcryptAdapter implements Encrypter, HashComparer {
   async encrypt (value: string): Promise<string> {
