@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node dist/main/server.ts",
     "dev": "sucrase-node src/main/server.ts",
     "build": "rimraf dist && tsc",
     "test": "jest --passWithNoTests --silent --noStackTrace --runInBand --no-cache",
