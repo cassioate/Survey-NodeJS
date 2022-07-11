@@ -17,7 +17,7 @@ const makeAuthenticationStub = (): Authentication => {
 const makeValidationStub = (): Validation => {
   class ValidationStub implements Validation {
     async validate (input: any): Promise<Error> {
-      return null
+      return null as unknown as Error
     }
   }
   return new ValidationStub()

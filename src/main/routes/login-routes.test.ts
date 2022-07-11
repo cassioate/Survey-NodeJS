@@ -33,9 +33,8 @@ describe('Login Routes', () => {
           passwordConfirmation: '123456'
         })
         .expect(200)
-      expect(value.body.name).toEqual('cassioTeste')
-      expect(value.body.email).toEqual('cassio@gmail.com')
-      expect(value.body.password).toBeTruthy()
+      console.log(value.body)
+      expect(value.body.accessToken).toBeTruthy()
     })
   })
 

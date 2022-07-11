@@ -35,7 +35,7 @@ services:
     # Usar o volume no compose no lugar do dockerfile, por causa do cache, aqui ele sempre vai atualizar o dist quando ele for modificado, 
     # ja no dockerfile, pode acabar nao ataulizando por causa do cache
     volumes:
-      - ./dist:/usr/src/clean-node-api/dist
+      - ./dist/:/usr/src/clean-node-api/dist
       - ./package.json:/usr/src/clean-node-api/package.json
     ports:
       - 5050:5050
