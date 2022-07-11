@@ -1,4 +1,4 @@
-import { MissingParamError } from '../../../presentation/errors'
+import { MissingParamError } from '../../presentation/errors'
 import { ValidationRequiredFields } from './validation-required-field'
 
 const fakeBody = {
@@ -12,7 +12,7 @@ describe('ValidationRequiredFields', () => {
   test('Should return MissingParamError if no name is provided', async () => {
     const sut = new ValidationRequiredFields('name')
     const newFakeBody = { ...fakeBody }
-    newFakeBody.name = null
+    newFakeBody.name = null as unknown as string
     const result = await sut.validate(newFakeBody)
     expect(result.message).toEqual(new MissingParamError('name').message)
   })

@@ -1,11 +1,11 @@
-import { InvalidParamError } from '../../../presentation/errors'
-import { Validation } from '../../protocols/validation'
+import { InvalidParamError } from '../../presentation/errors'
+import { Validation } from '../../presentation/protocols'
 import { ValidationComposite } from './validation-composite'
 
 const makeValidationStub = (): Validation => {
   class ValidationStub implements Validation {
     async validate (input: any): Promise<Error> {
-      return undefined
+      return undefined as unknown as Error
     }
   }
   return new ValidationStub()
