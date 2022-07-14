@@ -1,9 +1,9 @@
-import { httpBadRequest } from '../../helpers/http/http-helper'
-import { Validation } from '../../protocols/validation'
-import { InternalServerError, MissingParamError } from '../../errors'
-import { SignUpController } from './signup-controller'
-import { AccountModel, AddAccount, AddAccountModel, HttpRequest } from './signup-protocols'
-import { Authentication, AuthenticationModel } from '../../../domain/usecases/add-account/authentication'
+import { Authentication, AuthenticationModel } from '../../../../domain/usecases/add-account/authentication'
+import { InternalServerError, MissingParamError } from '../../../errors'
+import { AccountModel, AddAccount, AddAccountModel, HttpRequest } from '../signup/signup-protocols'
+import { Validation } from '../../../protocols/validation'
+import { httpBadRequest } from '../../../helpers/http/http-helper'
+import { SignUpController } from '../signup/signup-controller'
 
 const makeAuthenticationStub = (): Authentication => {
   class AuthenticationStub implements Authentication {

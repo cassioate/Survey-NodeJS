@@ -1,9 +1,8 @@
-import { Validation } from '../../protocols/validation'
-import { InternalServerError } from '../../errors/index'
-import { httpBadRequest, httpForbidden, httpOk, httpServerError } from '../../helpers/http/http-helper'
-import { HttpRequest, HttpResponse, Controller, AddAccount } from './signup-protocols'
-import { Authentication } from '../../../domain/usecases/add-account/authentication'
-import { EmailInUseError } from '../../errors/email-in-use-error'
+import { Authentication } from '../../../../domain/usecases/add-account/authentication'
+import { InternalServerError } from '../../../errors'
+import { EmailInUseError } from '../../../errors/email-in-use-error'
+import { httpBadRequest, httpForbidden, httpOk, httpServerError } from '../../../helpers/http/http-helper'
+import { Controller, AddAccount, Validation, HttpRequest, HttpResponse } from './signup-protocols'
 
 export class SignUpController implements Controller {
   private readonly addAccount: AddAccount
