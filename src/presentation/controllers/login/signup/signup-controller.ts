@@ -1,4 +1,4 @@
-import { Authentication } from '../../../../domain/usecases/add-account/authentication'
+import { Authentication } from '../../../../domain/usecases/authentication/authentication'
 import { InternalServerError } from '../../../errors'
 import { EmailInUseError } from '../../../errors/email-in-use-error'
 import { httpBadRequest, httpForbidden, httpOk, httpServerError } from '../../../helpers/http/http-helper'

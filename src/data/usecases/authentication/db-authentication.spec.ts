@@ -3,7 +3,7 @@ import { TokenGenerator } from '../../../data/protocols/criptography/token-gener
 import { UpdateAccessTokenRepository } from '../../../data/protocols/db/db-account/update-access-token-repository'
 import { LoadAccountByEmailRepository } from '../../../data/protocols/db/db-account/load-account-by-email-repository'
 import { AccountModel } from '../../../domain/models/account'
-import { AuthenticationModel } from '../../../domain/usecases/add-account/authentication'
+import { AuthenticationModel } from '../../../domain/usecases/authentication/authentication'
 import { DbAuthentication } from './db-authentication'
 
 const makeFakeAccount = (): AccountModel => {

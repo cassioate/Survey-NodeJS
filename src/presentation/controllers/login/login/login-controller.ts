@@ -1,5 +1,5 @@
 import { Validation } from '../../../protocols/validation'
-import { Authentication } from '../../../../domain/usecases/add-account/authentication'
+import { Authentication } from '../../../../domain/usecases/authentication/authentication'
 import { InternalServerError } from '../../../errors'
 import { httpBadRequest, httpOk, httpServerError, httpUnauthorized } from '../../../helpers/http/http-helper'
 import { Controller, HttpRequest, HttpResponse } from '../signup/signup-protocols'

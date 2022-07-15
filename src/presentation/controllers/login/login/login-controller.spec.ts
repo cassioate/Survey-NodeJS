@@ -1,4 +1,4 @@
-import { Authentication, AuthenticationModel } from '../../../../domain/usecases/add-account/authentication'
+import { Authentication, AuthenticationModel } from '../../../../domain/usecases/authentication/authentication'
 import { MissingParamError, UnauthorizedError } from '../../../errors'
 import { HttpRequest, HttpResponse } from '../signup/signup-protocols'
 import { LoginController } from './login-controller'

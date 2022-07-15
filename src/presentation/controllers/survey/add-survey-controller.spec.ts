@@ -1,7 +1,8 @@
-import { MissingParamError } from '../../errors'
+import { InternalServerError, MissingParamError } from '../../errors'
 import { Validation } from '../../protocols'
 import { HttpRequest } from '../../protocols/http'
 import { AddSurveyController } from './add-survey-controller'
+import { AddSurvey } from '../../../domain/usecases/survey/add-survey'
 
 const makeValidationStub = (): Validation => {
   class ValidationStub implements Validation {
@@ -12,17 +13,28 @@ const makeValidationStub = (): Validation => {
   return new ValidationStub()
 }
 
+const makeAddSurveyStub = (): AddSurvey => {
+  class AddSurveyStub implements AddSurvey {
+    async add (input: any): Promise<void> {
+    }
+  }
+  return new AddSurveyStub()
+}
+
 interface SutTypes {
   sut: AddSurveyController
   validationStub: Validation
+  addSurveyStub: AddSurvey
 }
 
 const makeSut = (): SutTypes => {
   const validationStub = makeValidationStub()
-  const sut = new AddSurveyController(validationStub)
+  const addSurveyStub = makeAddSurveyStub()
+  const sut = new AddSurveyController(validationStub, addSurveyStub)
   return {
     sut,
-    validationStub
+    validationStub,
+    addSurveyStub
   }
 }
 
@@ -63,15 +75,26 @@ describe('AddSurvey Controller', () => {
     expect(result.body.message).toEqual(new MissingParamError('question').message)
   })
 
-  // test('Should throw if Validation throws', async () => {
-  //   const { sut, validationStub } = makeSut()
-  //   jest.spyOn(validationStub, 'validate').mockImplementationOnce(async () => {
-  //     throw new Error()
-  //   })
+  test('Should call method add in addSurvey with correct values', async () => {
+    const { sut, addSurveyStub } = makeSut()
+    const SpyOnAdd = jest.spyOn(addSurveyStub, 'add')
 
-  //   const httpRequest = makeFakeHttpRequest()
-  //   const result = sut.handle(httpRequest)
+    const httpRequest = makeFakeHttpRequest()
+    await sut.handle(httpRequest)
 
-  //   await expect(result).rejects.toThrow(httpRequest.body)
-  // })
+    expect(SpyOnAdd).toBeCalledWith(httpRequest.body)
+  })
+
+  test('Should return a internal error if any error be throw in handle method', async () => {
+    const { sut, addSurveyStub } = makeSut()
+    jest.spyOn(addSurveyStub, 'add').mockImplementationOnce(async () => {
+      throw new Error()
+    })
+
+    const httpRequest = makeFakeHttpRequest()
+    const result = await sut.handle(httpRequest)
+
+    expect(result.statusCode).toEqual(500)
+    expect(result.body.message).toEqual(new InternalServerError(new Error().stack).message)
+  })
 })
