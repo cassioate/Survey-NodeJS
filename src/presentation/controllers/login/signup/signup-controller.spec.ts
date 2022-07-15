@@ -4,6 +4,7 @@ import { AccountModel, AddAccount, AddAccountModel, HttpRequest } from '../signu
 import { Validation } from '../../../protocols/validation'
 import { httpBadRequest } from '../../../helpers/http/http-helper'
 import { SignUpController } from '../signup/signup-controller'
+import { EmailInUseError } from '../../../errors/email-in-use-error'
 
 const makeAuthenticationStub = (): Authentication => {
   class AuthenticationStub implements Authentication {
@@ -103,6 +104,16 @@ describe('SignUp Controller', () => {
       email: 'valid_email@email.com',
       password: 'valid_password'
     })
+  })
+
+  test('Should return 403 forbidden if email is already in use', async () => {
+    const { sut, addAccountStub } = makeSut()
+    jest.spyOn(addAccountStub, 'add').mockImplementationOnce(async () => {
+      return null as unknown as AccountModel
+    })
+    const result = await sut.handle(makeFakeHttpRequest())
+    expect(result.statusCode).toBe(403)
+    expect(result.body.message).toEqual(new EmailInUseError().message)
   })
 
   test('Should call authentication.auth with correct values', async () => {
