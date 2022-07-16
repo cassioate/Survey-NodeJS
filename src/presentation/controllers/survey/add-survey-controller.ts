@@ -1,6 +1,6 @@
 import { AddSurvey } from '../../../domain/usecases/survey/add-survey'
 import { InternalServerError } from '../../errors'
-import { httpBadRequest, httpServerError } from '../../helpers/http/http-helper'
+import { httpBadRequest, httpNoContent, httpServerError } from '../../helpers/http/http-helper'
 import { Controller, HttpRequest, HttpResponse, Validation } from '../../protocols'
 
 export class AddSurveyController implements Controller {
@@ -19,7 +19,7 @@ export class AddSurveyController implements Controller {
         return httpBadRequest(error)
       }
       await this.addSurvey.add(httpRequest.body)
-      return null
+      return httpNoContent()
     } catch (error) {
       return httpServerError(new InternalServerError(error.stack))
     }

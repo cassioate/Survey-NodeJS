@@ -3,6 +3,7 @@ import { Validation } from '../../protocols'
 import { HttpRequest } from '../../protocols/http'
 import { AddSurveyController } from './add-survey-controller'
 import { AddSurvey } from '../../../domain/usecases/survey/add-survey'
+import { httpNoContent } from '../../helpers/http/http-helper'
 
 const makeValidationStub = (): Validation => {
   class ValidationStub implements Validation {
@@ -88,13 +89,21 @@ describe('AddSurvey Controller', () => {
   test('Should return a internal error if any error be throw in handle method', async () => {
     const { sut, addSurveyStub } = makeSut()
     jest.spyOn(addSurveyStub, 'add').mockImplementationOnce(async () => {
-      throw new Error()
+      throw new InternalServerError('stack')
     })
 
     const httpRequest = makeFakeHttpRequest()
     const result = await sut.handle(httpRequest)
 
     expect(result.statusCode).toEqual(500)
-    expect(result.body.message).toEqual(new InternalServerError(new Error().stack).message)
+    expect(result.body.message).toEqual(new InternalServerError('stack').message)
+  })
+
+  test('Should return 204 statusCode if all goes ok with the handle method', async () => {
+    const { sut } = makeSut()
+    const httpRequest = makeFakeHttpRequest()
+    const result = await sut.handle(httpRequest)
+    expect(result.statusCode).toEqual(204)
+    expect(result).toEqual(httpNoContent())
   })
 })
