@@ -4,6 +4,7 @@ import { HttpRequest } from '../../protocols/http'
 import { AddSurveyController } from './add-survey-controller'
 import { AddSurvey } from '../../../domain/usecases/survey/add-survey'
 import { httpNoContent } from '../../helpers/http/http-helper'
+import { SurveyModel } from '../../../domain/models/survey'
 
 const makeValidationStub = (): Validation => {
   class ValidationStub implements Validation {
@@ -15,11 +16,15 @@ const makeValidationStub = (): Validation => {
 }
 
 const makeAddSurveyStub = (): AddSurvey => {
-  class AddSurveyStub implements AddSurvey {
-    async add (input: any): Promise<void> {
+  class DbAddSurveyStub implements AddSurvey {
+    async add (survey: any): Promise<SurveyModel> {
+      return {
+        id: 'id_valid',
+        ...survey
+      }
     }
   }
-  return new AddSurveyStub()
+  return new DbAddSurveyStub()
 }
 
 interface SutTypes {
