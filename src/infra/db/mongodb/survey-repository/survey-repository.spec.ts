@@ -5,7 +5,7 @@ import { Collection } from 'mongodb'
 import { AddSurveyModel } from '../../../../domain/usecases/survey/add-survey'
 import { SurveyMongoRepository } from '../survey-repository/survey-repository'
 
-let accountCollection: Collection
+let surveyCollection: Collection
 
 const makeFakeSurveyModel = (): AddSurveyModel => {
   return {
@@ -17,7 +17,7 @@ const makeFakeSurveyModel = (): AddSurveyModel => {
   }
 }
 
-describe('Account Repository MongoDB', () => {
+describe('Survey Repository MongoDB', () => {
   beforeAll(async () => {
     await MongoHelper.connect(env.mongoUrl)
   })
@@ -27,18 +27,16 @@ describe('Account Repository MongoDB', () => {
   })
 
   beforeEach(async () => {
-    accountCollection = await MongoHelper.getCollection('survey')
-    await accountCollection.deleteMany({})
+    surveyCollection = await MongoHelper.getCollection('surveys')
+    await surveyCollection.deleteMany({})
   })
 
   test('Should return an survey on add success', async () => {
     const sut = new SurveyMongoRepository()
     const fakeSurveyModel = makeFakeSurveyModel()
-    const result = await sut.add(fakeSurveyModel)
 
+    await sut.add(fakeSurveyModel)
+    const result = await surveyCollection.findOne({ question: fakeSurveyModel.question })
     expect(result).toBeTruthy()
-    expect(result.id).toBeTruthy()
-    expect(result.question).toEqual(fakeSurveyModel.question)
-    expect(result.answers).toEqual(fakeSurveyModel.answers)
   })
 })

@@ -1,6 +1,5 @@
-import { SurveyModel } from '../../../domain/models/survey'
 import { AddSurvey, AddSurveyModel } from '../../../domain/usecases/survey/add-survey'
-import { AddSurveyRepository } from '../../protocols/db/db-survey/add-account-repository'
+import { AddSurveyRepository } from '../../protocols/db/db-survey/add-survey-repository'
 
 export class DbAddSurvey implements AddSurvey {
   private readonly addSurveyRepository: AddSurveyRepository
@@ -9,7 +8,7 @@ export class DbAddSurvey implements AddSurvey {
     this.addSurveyRepository = addSurveyRepository
   }
 
-  async add (survey: AddSurveyModel): Promise<SurveyModel> {
-    return await this.addSurveyRepository.add(survey)
+  async add (survey: AddSurveyModel): Promise<void> {
+    await this.addSurveyRepository.add(survey)
   }
 }

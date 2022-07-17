@@ -1,4 +1,4 @@
-import { SurveyAnswer, SurveyModel } from '../../models/survey'
+import { SurveyAnswer } from '../../models/survey'
 
 export interface AddSurveyModel {
   question: string
@@ -6,5 +6,5 @@ export interface AddSurveyModel {
 }
 
 export interface AddSurvey {
-  add: (survey: AddSurveyModel) => Promise<SurveyModel>
+  add: (survey: AddSurveyModel) => Promise<void>
 }

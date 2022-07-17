@@ -1,15 +1,10 @@
-import { SurveyModel } from '../../../domain/models/survey'
 import { AddSurveyModel } from '../../../domain/usecases/survey/add-survey'
-import { AddSurveyRepository } from '../../protocols/db/db-survey/add-account-repository'
+import { AddSurveyRepository } from '../../protocols/db/db-survey/add-survey-repository'
 import { DbAddSurvey } from './db-add-survey'
 
 const makeAddSurveyRepository = (): AddSurveyRepository => {
   class AddSurveyRepositoryStub implements AddSurveyRepository {
-    async add (value: AddSurveyModel): Promise<SurveyModel> {
-      return {
-        id: 'id_valid',
-        ...value
-      }
+    async add (value: AddSurveyModel): Promise<void> {
     }
   }
   return new AddSurveyRepositoryStub()
@@ -55,15 +50,5 @@ describe('AddSurvey', () => {
     })
     const requestAddSuveyRepository = makeFakeSurveyModel()
     await expect(sut.add(requestAddSuveyRepository)).rejects.toThrow()
-  })
-
-  test('Should return a SuveyModel if all goes ok', async () => {
-    const { sut } = makeSut()
-    const requestAddSuveyRepository = makeFakeSurveyModel()
-    const result = await sut.add(requestAddSuveyRepository)
-    expect(result).toEqual({
-      id: 'id_valid',
-      ...requestAddSuveyRepository
-    })
   })
 })
