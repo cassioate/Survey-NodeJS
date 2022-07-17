@@ -14,16 +14,22 @@ export class AddSurveyController implements Controller {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      // console.log(httpRequest.body)
       const error = await this.validation.validate(httpRequest.body)
       if (error) {
         return httpBadRequest(error)
       }
+      // Need to do this, because has no validation in the httpRequest body,
+      // so if i not do this, i can received answers with any field inside, and that should not happen.
       const { question, answers } = httpRequest.body
+      const { image, answer } = answers
+      answers.image = image
+      answers.answer = answer
+
       await this.addSurvey.add({
         question,
         answers
       })
+
       return httpNoContent()
     } catch (error) {
       return httpServerError(new InternalServerError(error.stack))

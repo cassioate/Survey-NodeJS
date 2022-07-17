@@ -1,5 +1,6 @@
 import { Validation } from '../../../../../presentation/protocols/validation'
 import { ValidationRequiredFields, ValidationComposite } from '../../../../../validation/validators'
+import { ValidationRequiredFieldsInside } from '../../../../../validation/validators/validation-required-field-inside'
 import { makeAddSurveyValidationComposite } from './add-survey-validation-factory'
 
 jest.mock('../../../../../validation/validators/validation-composite')
@@ -11,7 +12,7 @@ describe('SignUpValidation Factory', () => {
     for (const field of fields) {
       validations.push(new ValidationRequiredFields(field))
     }
-
+    validations.push(new ValidationRequiredFieldsInside('answers', 'answer'))
     makeAddSurveyValidationComposite()
     expect(ValidationComposite).toBeCalledWith(validations)
   })

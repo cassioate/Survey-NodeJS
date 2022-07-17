@@ -1,5 +1,6 @@
 import { Validation } from '../../../../../presentation/protocols'
 import { ValidationRequiredFields, ValidationComposite } from '../../../../../validation/validators'
+import { ValidationRequiredFieldsInside } from '../../../../../validation/validators/validation-required-field-inside'
 
 export const makeAddSurveyValidationComposite = (): Validation => {
   const validations: Validation[] = []
@@ -7,5 +8,6 @@ export const makeAddSurveyValidationComposite = (): Validation => {
   for (const field of fields) {
     validations.push(new ValidationRequiredFields(field))
   }
+  validations.push(new ValidationRequiredFieldsInside('answers', 'answer'))
   return new ValidationComposite(validations)
 }
