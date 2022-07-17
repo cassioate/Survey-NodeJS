@@ -99,6 +99,23 @@ describe('AddSurvey Controller', () => {
     expect(result.body.message).toEqual(new InternalServerError('stack').message)
   })
 
+  test('Should return a MissingParamError error if answers is not one array', async () => {
+    const { sut } = makeSut()
+
+    const newFakeBody = {
+      body: {
+        question: 'who is more beautiful?',
+        answers: {
+          answer: null,
+          image: 'testeImage'
+        }
+      }
+    }
+
+    const result = await sut.handle(newFakeBody)
+    expect(result.body.message).toEqual(new MissingParamError('answers need to be array').message)
+  })
+
   test('Should return 204 statusCode if all goes ok with the handle method', async () => {
     const { sut } = makeSut()
     const httpRequest = makeFakeHttpRequest()
