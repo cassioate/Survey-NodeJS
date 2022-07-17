@@ -1,5 +1,5 @@
 import { AddSurvey } from '../../../domain/usecases/survey/add-survey'
-import { InternalServerError } from '../../errors'
+import { InternalServerError, MissingParamError } from '../../errors'
 import { httpBadRequest, httpNoContent, httpServerError } from '../../helpers/http/http-helper'
 import { Controller, HttpRequest, HttpResponse, Validation } from '../../protocols'
 
@@ -18,16 +18,23 @@ export class AddSurveyController implements Controller {
       if (error) {
         return httpBadRequest(error)
       }
+
       // Need to do this, because has no validation in the httpRequest body,
       // so if i not do this, i can received answers with any field inside, and that should not happen.
-      const { question, answers } = httpRequest.body
-      const { image, answer } = answers
-      answers.image = image
-      answers.answer = answer
+      // ------
+      if (!Array.isArray(httpRequest.body.answers)) {
+        return httpBadRequest(new MissingParamError('answers need to be array'))
+      }
 
+      const { question } = httpRequest.body
       await this.addSurvey.add({
         question,
-        answers
+        answers: httpRequest.body.answers.map(answer => {
+          return {
+            image: answer.image,
+            answer: answer.answer
+          }
+        })
       })
 
       return httpNoContent()
