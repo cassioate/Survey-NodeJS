@@ -106,6 +106,17 @@ describe('LoadAccountByAccessToken', () => {
     expect(result).toEqual(makeFakeAccount())
   })
 
+  test('Should return null if account', async () => {
+    const { sut, loadAccountByTokenRepositoryStub } = makeSut()
+    jest.spyOn(loadAccountByTokenRepositoryStub, 'loadByToken').mockImplementationOnce(async () => {
+      const account = makeFakeAccount()
+      account.role = undefined
+      return account
+    })
+    const result = await sut.loadByToken('any_token', 'any_role')
+    expect(result).toEqual(null)
+  })
+
   test('Should return null if the account no exist in database', async () => {
     const { sut, loadAccountByTokenRepositoryStub } = makeSut()
     jest.spyOn(loadAccountByTokenRepositoryStub, 'loadByToken').mockImplementation(async () => {
