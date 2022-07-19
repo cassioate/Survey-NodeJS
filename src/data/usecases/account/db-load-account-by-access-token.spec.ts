@@ -1,6 +1,8 @@
 import { AccountModel } from '../../../domain/models/account'
+import { Roles } from '../../../domain/models/roles'
 import { Decrypter } from '../../protocols/criptography/Decrypter'
 import { LoadAccountByTokenRepository } from '../../protocols/db/db-account/load-account-by-token-repository'
+import { LoadRolesRepository } from '../../protocols/db/roles/load-roles-repository'
 import { DbLoadAccountByToken } from './db-load-account-by-access-token'
 
 const makeFakeAccount = (): AccountModel => {
@@ -10,6 +12,18 @@ const makeFakeAccount = (): AccountModel => {
     email: 'any_email@email.com',
     password: 'any_password'
   }
+}
+
+const makeLoadRolesRepositorySut = (): LoadRolesRepository => {
+  class LoadRolesRepositoryStub implements LoadRolesRepository {
+    async loadRole (role: string): Promise<Roles> {
+      return {
+        id: 1,
+        value: 'admin'
+      }
+    }
+  }
+  return new LoadRolesRepositoryStub()
 }
 
 const makeDecrypterSut = (): Decrypter => {
@@ -34,16 +48,19 @@ interface SutTypes {
   sut: DbLoadAccountByToken
   decrypterStub: Decrypter
   loadAccountByTokenRepositoryStub: LoadAccountByTokenRepository
+  loadRolesRepositoryStub: LoadRolesRepository
 }
 
 const makeSut = (): SutTypes => {
   const loadAccountByTokenRepositoryStub = makeLoadAccountByTokenRepository()
   const decrypterStub = makeDecrypterSut()
-  const sut = new DbLoadAccountByToken(decrypterStub, loadAccountByTokenRepositoryStub)
+  const loadRolesRepositoryStub = makeLoadRolesRepositorySut()
+  const sut = new DbLoadAccountByToken(decrypterStub, loadAccountByTokenRepositoryStub, loadRolesRepositoryStub)
   return {
     sut,
     decrypterStub,
-    loadAccountByTokenRepositoryStub
+    loadAccountByTokenRepositoryStub,
+    loadRolesRepositoryStub
   }
 }
 
@@ -60,7 +77,8 @@ describe('LoadAccountByAccessToken', () => {
     jest.spyOn(decrypterStub, 'decrypt').mockImplementation(() => {
       throw new Error('decrypt throws')
     })
-    await expect(sut.loadByToken('any_token')).rejects.toThrow('decrypt throws')
+    const result = await sut.loadByToken('any_token')
+    expect(result).toEqual(null)
   })
 
   test('Should call loadByToken() with correct values', async () => {

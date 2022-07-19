@@ -54,6 +54,14 @@ describe('Auth Middleware', () => {
     expect(result.body.message).toEqual(new ForbiddenError().message)
   })
 
+  test('Should return 403 if no header exist', async () => {
+    const { sut } = makeSut()
+    const httpRequest = makeHttpRequest()
+    httpRequest.headers = null
+    const result = await sut.handle(httpRequest)
+    expect(result.body.message).toEqual(new ForbiddenError().message)
+  })
+
   test('Should loadByToken be called with correct values', async () => {
     const role = 'any_role'
     const { sut, loadByTokenAccountByToken } = makeSut(role)
