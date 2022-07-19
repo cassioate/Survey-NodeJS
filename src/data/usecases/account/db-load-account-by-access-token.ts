@@ -24,9 +24,8 @@ export class DbLoadAccountByToken implements LoadAccountByToken {
     if (decryptedToken) {
       const account = await this.loadAccountByTokenRepository.loadByToken(accessToken, role)
       if (account) {
-        const accountRole = await this.loadRoles.loadRole(account.role?.value)
         const roleValue = await this.loadRoles.loadRole(role)
-        if (accountRole.id <= roleValue.id) {
+        if (account.role?.id <= roleValue.id) {
           return account
         }
       }

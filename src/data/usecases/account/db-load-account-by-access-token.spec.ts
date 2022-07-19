@@ -10,7 +10,11 @@ const makeFakeAccount = (): AccountModel => {
     id: 'any_id',
     name: 'any_name',
     email: 'any_email@email.com',
-    password: 'any_password'
+    password: 'any_password',
+    role: {
+      id: 1,
+      value: 'admin'
+    }
   }
 }
 
@@ -88,7 +92,7 @@ describe('LoadAccountByAccessToken', () => {
     expect(spyOn).toBeCalledWith('any_token', 'any_role')
   })
 
-  test('Should call loadByToken() with correct values', async () => {
+  test('Should throw if loadByToken() throws', async () => {
     const { sut, loadAccountByTokenRepositoryStub } = makeSut()
     jest.spyOn(loadAccountByTokenRepositoryStub, 'loadByToken').mockImplementation(() => {
       throw new Error('decrypt throws')
@@ -96,7 +100,7 @@ describe('LoadAccountByAccessToken', () => {
     await expect(sut.loadByToken('any_token', 'any_role')).rejects.toThrow('decrypt throws')
   })
 
-  test('Should call loadByToken() with correct values', async () => {
+  test('Should return a account if all goes right', async () => {
     const { sut } = makeSut()
     const result = await sut.loadByToken('any_token', 'any_role')
     expect(result).toEqual(makeFakeAccount())

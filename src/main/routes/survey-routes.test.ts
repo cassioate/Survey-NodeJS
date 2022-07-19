@@ -111,7 +111,7 @@ describe('Survey Routes', () => {
       email: 'any_email',
       password: 'any_password',
       role: {
-        id: 1,
+        id: 3,
         value: 'user'
       }
     })
