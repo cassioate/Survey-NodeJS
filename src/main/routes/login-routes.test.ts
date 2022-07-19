@@ -33,7 +33,6 @@ describe('Login Routes', () => {
           passwordConfirmation: '123456'
         })
         .expect(200)
-      console.log(value.body)
       expect(value.body.accessToken).toBeTruthy()
     })
   })

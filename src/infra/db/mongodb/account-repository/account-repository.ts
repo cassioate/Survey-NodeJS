@@ -3,10 +3,12 @@ import { UpdateAccessTokenRepository } from '../../../../data/protocols/db/db-ac
 import { ObjectId } from 'mongodb'
 import { AddAccountRepository } from '../../../../data/protocols/db/db-account/add-account-repository'
 import { AccountModel } from '../../../../domain/models/account'
-import { AddAccountModel } from '../../../../domain/usecases/add-account/add-account'
+import { AddAccountModel } from '../../../../domain/usecases/account/add-account'
 import { MongoHelper } from '../helpers/mongo-helper'
+import { LoadAccountByTokenRepository } from '../../../../data/protocols/db/db-account/load-account-by-token-repository'
 
-export class AccountMongoRepository implements AddAccountRepository, LoadAccountByEmailRepository, UpdateAccessTokenRepository {
+export class AccountMongoRepository implements AddAccountRepository,
+LoadAccountByEmailRepository, UpdateAccessTokenRepository, LoadAccountByTokenRepository {
   async add (accountData: AddAccountModel): Promise<AccountModel> {
     const accountCollection = await MongoHelper.getCollection('accounts')
     const result = await accountCollection.insertOne(accountData)
@@ -17,6 +19,7 @@ export class AccountMongoRepository implements AddAccountRepository, LoadAccount
   async loadByEmail (email: string): Promise<AccountModel> {
     const accountCollection = await MongoHelper.getCollection('accounts')
     const account = await accountCollection.findOne({ email })
+    // The name of this is 'short-circuit evaluation'
     return account && MongoHelper.map(account)
   }
 
@@ -27,5 +30,12 @@ export class AccountMongoRepository implements AddAccountRepository, LoadAccount
         accessToken: accessToken
       }
     })
+  }
+
+  async loadByToken (accessToken: string, role?: string): Promise<AccountModel> {
+    const accountCollection = await MongoHelper.getCollection('accounts')
+    const account = await accountCollection.findOne({ accessToken })
+    // The name of this is 'short-circuit evaluation'
+    return account && MongoHelper.map(account)
   }
 }
