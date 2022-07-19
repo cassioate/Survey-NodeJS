@@ -16,7 +16,7 @@ const makeFakeAccount = (): AccountModel => {
 
 const makeLoadAccountByToken = (): LoadAccountByToken => {
   class LoadAccountByTokenStub implements LoadAccountByToken {
-    async load (accessToken: string): Promise<AccountModel> {
+    async loadByToken (accessToken: string): Promise<AccountModel> {
       return makeFakeAccount()
     }
   }
@@ -33,15 +33,15 @@ const makeHttpRequest = (): HttpRequest => {
 
 interface SutTypes {
   sut: AuthMiddleware
-  loadAccountByToken: LoadAccountByToken
+  loadByTokenAccountByToken: LoadAccountByToken
 }
 
 const makeSut = (role?: string): SutTypes => {
-  const loadAccountByToken = makeLoadAccountByToken()
-  const sut = new AuthMiddleware(loadAccountByToken, role)
+  const loadByTokenAccountByToken = makeLoadAccountByToken()
+  const sut = new AuthMiddleware(loadByTokenAccountByToken, role)
   return {
     sut,
-    loadAccountByToken
+    loadByTokenAccountByToken
   }
 }
 
@@ -54,18 +54,18 @@ describe('Auth Middleware', () => {
     expect(result.body.message).toEqual(new ForbiddenError().message)
   })
 
-  test('Should load be called with correct values', async () => {
+  test('Should loadByToken be called with correct values', async () => {
     const role = 'any_role'
-    const { sut, loadAccountByToken } = makeSut(role)
-    const loadSpyOn = jest.spyOn(loadAccountByToken, 'load')
+    const { sut, loadByTokenAccountByToken } = makeSut(role)
+    const loadByTokenSpyOn = jest.spyOn(loadByTokenAccountByToken, 'loadByToken')
     const httpRequest = makeHttpRequest()
     await sut.handle(httpRequest)
-    expect(loadSpyOn).toBeCalledWith('any_token', role)
+    expect(loadByTokenSpyOn).toBeCalledWith('any_token', role)
   })
 
-  test('Should return 403 if load return null', async () => {
-    const { sut, loadAccountByToken } = makeSut()
-    jest.spyOn(loadAccountByToken, 'load').mockImplementation(async () => {
+  test('Should return 403 if loadByToken return null', async () => {
+    const { sut, loadByTokenAccountByToken } = makeSut()
+    jest.spyOn(loadByTokenAccountByToken, 'loadByToken').mockImplementation(async () => {
       return null as unknown as AccountModel
     })
     const httpRequest = makeHttpRequest()
@@ -73,16 +73,16 @@ describe('Auth Middleware', () => {
     expect(result.body.message).toEqual(new ForbiddenError().message)
   })
 
-  test('Should return 200 if load return a accountId', async () => {
+  test('Should return 200 if loadByToken return a accountId', async () => {
     const { sut } = makeSut()
     const httpRequest = makeHttpRequest()
     const result = await sut.handle(httpRequest)
     expect(result.body).toEqual('any_id')
   })
 
-  test('Should return a server error if loadAccountByToken throws', async () => {
-    const { sut, loadAccountByToken } = makeSut()
-    jest.spyOn(loadAccountByToken, 'load').mockImplementation(async () => {
+  test('Should return a server error if loadByTokenAccountByToken throws', async () => {
+    const { sut, loadByTokenAccountByToken } = makeSut()
+    jest.spyOn(loadByTokenAccountByToken, 'loadByToken').mockImplementation(async () => {
       throw new Error()
     })
     const httpRequest = makeHttpRequest()

@@ -37,7 +37,7 @@ describe('Survey Routes', () => {
       await request(app)
         .post('/api/survey/add')
         .send(makeFakeSurveyModel())
-        .expect(204)
+        .expect(403)
     })
   })
 })
