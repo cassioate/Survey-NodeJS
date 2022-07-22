@@ -1,5 +1,5 @@
-import { AddSurveyModel } from '../../../domain/usecases/survey/add-survey'
-import { AddSurveyRepository } from '../../protocols/db/db-survey/add-survey-repository'
+import { AddSurveyModel } from '../../../../domain/usecases/survey/add-survey'
+import { AddSurveyRepository } from '../../../protocols/db/db-survey/add-survey-repository'
 import { DbAddSurvey } from './db-add-survey'
 
 const makeAddSurveyRepository = (): AddSurveyRepository => {
@@ -30,7 +30,8 @@ const makeFakeSurveyModel = (): AddSurveyModel => {
     answers: [{
       image: 'image',
       answer: 'answer'
-    }]
+    }],
+    date: new Date()
   }
 }
 
