@@ -1,7 +1,7 @@
-import { AddSurvey } from '../../../domain/usecases/survey/add-survey'
-import { InternalServerError, MissingParamError } from '../../errors'
-import { httpBadRequest, httpNoContent, httpServerError } from '../../helpers/http/http-helper'
-import { Controller, HttpRequest, HttpResponse, Validation } from '../../protocols'
+import { AddSurvey } from '../../../../domain/usecases/survey/add-survey'
+import { MissingParamError, InternalServerError } from '../../../errors'
+import { httpBadRequest, httpNoContent, httpServerError } from '../../../helpers/http/http-helper'
+import { Controller, Validation, HttpRequest, HttpResponse } from '../../../protocols'
 
 export class AddSurveyController implements Controller {
   private readonly validation: Validation

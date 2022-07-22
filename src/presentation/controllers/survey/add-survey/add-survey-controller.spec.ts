@@ -1,9 +1,9 @@
-import { InternalServerError, MissingParamError } from '../../errors'
-import { Validation } from '../../protocols'
-import { HttpRequest } from '../../protocols/http'
+import { InternalServerError, MissingParamError } from '../../../errors'
+import { Validation } from '../../../protocols'
+import { HttpRequest } from '../../../protocols/http'
 import { AddSurveyController } from './add-survey-controller'
-import { AddSurvey } from '../../../domain/usecases/survey/add-survey'
-import { httpNoContent } from '../../helpers/http/http-helper'
+import { AddSurvey } from '../../../../domain/usecases/survey/add-survey'
+import { httpNoContent } from '../../../helpers/http/http-helper'
 import MockDate from 'mockdate'
 
 const makeValidationStub = (): Validation => {
