@@ -33,7 +33,7 @@ describe('Survey Routes', () => {
   })
 
   beforeEach(async () => {
-    surveyCollection = await MongoHelper.getCollection('survey')
+    surveyCollection = await MongoHelper.getCollection('surveys')
     await surveyCollection.deleteMany({})
 
     accountCollection = await MongoHelper.getCollection('accounts')
@@ -76,62 +76,100 @@ describe('Survey Routes', () => {
         .send(makeFakeSurveyModel())
         .expect(204)
     })
+
+    test('Should survey add return 403 if token is invalid', async () => {
+      const account = await accountCollection.insertOne({
+        name: 'any_name',
+        email: 'any_email',
+        password: 'any_password',
+        role: {
+          id: 1,
+          value: 'admin'
+        }
+      })
+
+      const accessToken = 'invalid_access_token'
+
+      await accountCollection.updateOne({
+        _id: account.insertedId
+      }, {
+        $set: {
+          accessToken
+        }
+      })
+
+      await request(app)
+        .post('/api/survey/add')
+        .set('x-access-token', accessToken)
+        .send(makeFakeSurveyModel())
+        .expect(403)
+    })
+
+    test('Should survey add return 403 if the accessToken is valid but the role is wrong', async () => {
+      const account = await accountCollection.insertOne({
+        name: 'any_name',
+        email: 'any_email',
+        password: 'any_password',
+        role: {
+          id: 3,
+          value: 'user'
+        }
+      })
+
+      const jwtAdapter = new JwtAdapter(env.jwtSecret)
+      const accessToken = await jwtAdapter.encrypt(account.insertedId.toString())
+
+      await accountCollection.updateOne({
+        _id: account.insertedId
+      }, {
+        $set: {
+          accessToken
+        }
+      })
+
+      await request(app)
+        .post('/api/survey/add')
+        .set('x-access-token', accessToken)
+        .send(makeFakeSurveyModel())
+        .expect(403)
+    })
   })
 
-  test('Should survey add return 403 if token is invalid', async () => {
-    const account = await accountCollection.insertOne({
-      name: 'any_name',
-      email: 'any_email',
-      password: 'any_password',
-      role: {
-        id: 1,
-        value: 'admin'
-      }
+  describe('GET /survey/list', () => {
+    test('Should survey add return 403 if user not has a token', async () => {
+      await request(app)
+        .get('/api/survey/list')
+        .expect(403)
     })
 
-    const accessToken = 'invalid_access_token'
+    test('Should survey list return 200 on success', async () => {
+      const account = await accountCollection.insertOne({
+        name: 'any_name',
+        email: 'any_email',
+        password: 'any_password',
+        role: {
+          id: 3,
+          value: 'admin'
+        }
+      })
 
-    await accountCollection.updateOne({
-      _id: account.insertedId
-    }, {
-      $set: {
-        accessToken
-      }
+      const jwtAdapter = new JwtAdapter(env.jwtSecret)
+      const accessToken = await jwtAdapter.encrypt(account.insertedId.toString())
+
+      await accountCollection.updateOne({
+        _id: account.insertedId
+      }, {
+        $set: {
+          accessToken
+        }
+      })
+
+      await surveyCollection.insertMany([makeFakeSurveyModel()])
+
+      await request(app)
+        .get('/api/survey/list')
+        .set('x-access-token', accessToken)
+        .expect(200)
     })
-
-    await request(app)
-      .post('/api/survey/add')
-      .set('x-access-token', accessToken)
-      .send(makeFakeSurveyModel())
-      .expect(403)
-  })
-
-  test('Should survey add return 403 if the accessToken is valid but the role is wrong', async () => {
-    const account = await accountCollection.insertOne({
-      name: 'any_name',
-      email: 'any_email',
-      password: 'any_password',
-      role: {
-        id: 3,
-        value: 'user'
-      }
-    })
-
-    const jwtAdapter = new JwtAdapter(env.jwtSecret)
-    const accessToken = await jwtAdapter.encrypt(account.insertedId.toString())
-
-    await accountCollection.updateOne({
-      _id: account.insertedId
-    }, {
-      $set: {
-        accessToken
-      }
-    })
-
-    await request(app)
-      .post('/api/survey/add')
-      .set('x-access-token', accessToken)
-      .send(makeFakeSurveyModel())
-      .expect(403)
   })
 })
