@@ -1,12 +1,12 @@
 
-import { LoadSurveyController } from './load-survey-controller'
+import { LoadListSurveyController } from './load-list-survey-controller'
 import MockDate from 'mockdate'
 import { SurveyModel } from '../../../../domain/models/survey'
-import { LoadSurvey } from '../../../../domain/usecases/survey/load-survey'
+import { LoadListSurvey } from '../../../../domain/usecases/survey/load-list-survey'
 import { InternalServerError } from '../../../errors'
 
-const makeLoadSurveyStub = (): LoadSurvey => {
-  class DbLoadSurveyStub implements LoadSurvey {
+const makeLoadSurveyStub = (): LoadListSurvey => {
+  class DbLoadSurveyStub implements LoadListSurvey {
     async loadListSurvey (): Promise<SurveyModel[]> {
       return makeFakeListSurvey()
     }
@@ -15,13 +15,13 @@ const makeLoadSurveyStub = (): LoadSurvey => {
 }
 
 interface SutTypes {
-  sut: LoadSurveyController
-  loadSurveyStub: LoadSurvey
+  sut: LoadListSurveyController
+  loadSurveyStub: LoadListSurvey
 }
 
 const makeSut = (): SutTypes => {
   const loadSurveyStub = makeLoadSurveyStub()
-  const sut = new LoadSurveyController(loadSurveyStub)
+  const sut = new LoadListSurveyController(loadSurveyStub)
   return {
     sut,
     loadSurveyStub

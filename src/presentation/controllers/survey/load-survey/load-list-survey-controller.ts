@@ -1,12 +1,12 @@
-import { LoadSurvey } from '../../../../domain/usecases/survey/load-survey'
+import { LoadListSurvey } from '../../../../domain/usecases/survey/load-list-survey'
 import { InternalServerError } from '../../../errors'
 import { httpNoContent, httpOk, httpServerError } from '../../../helpers/http/http-helper'
 import { Controller, HttpRequest, HttpResponse } from '../../../protocols'
 
-export class LoadSurveyController implements Controller {
-  private readonly loadSurvey: LoadSurvey
+export class LoadListSurveyController implements Controller {
+  private readonly loadSurvey: LoadListSurvey
 
-  constructor (loadSurvey: LoadSurvey) {
+  constructor (loadSurvey: LoadListSurvey) {
     this.loadSurvey = loadSurvey
   }
 
