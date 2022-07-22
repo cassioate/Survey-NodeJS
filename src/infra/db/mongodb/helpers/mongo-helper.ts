@@ -25,6 +25,17 @@ export const MongoHelper = {
       id: _id,
       ...rest
     }
+  },
+
+  mapList (array: any[]): any[] {
+    const newArray = array.map(position => {
+      const { _id, ...rest } = position
+      return {
+        id: _id,
+        ...rest
+      }
+    })
+    return newArray
   }
 }
 
