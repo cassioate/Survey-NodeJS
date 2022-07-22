@@ -34,7 +34,8 @@ export class AddSurveyController implements Controller {
             image: answer.image,
             answer: answer.answer
           }
-        })
+        }),
+        date: new Date()
       })
 
       return httpNoContent()

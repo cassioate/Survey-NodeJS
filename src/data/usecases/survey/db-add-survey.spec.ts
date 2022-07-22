@@ -30,7 +30,8 @@ const makeFakeSurveyModel = (): AddSurveyModel => {
     answers: [{
       image: 'image',
       answer: 'answer'
-    }]
+    }],
+    date: new Date()
   }
 }
 

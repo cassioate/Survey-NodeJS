@@ -16,7 +16,8 @@ const fakeBody = (): AddSurveyModel => {
     {
       answer: 'teste3',
       image: 'testeImage3'
-    }]
+    }],
+    date: new Date()
   }
 }
 
