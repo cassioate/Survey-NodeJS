@@ -94,6 +94,16 @@ describe('LoadSurvey Controller', () => {
     expect(result.body).toEqual(listSurvey)
   })
 
+  test('Should return 204 statusCode if array is empty', async () => {
+    const { sut, loadSurveyStub } = makeSut()
+    jest.spyOn(loadSurveyStub, 'loadListSurvey').mockImplementationOnce(async () => {
+      return []
+    })
+
+    const result = await sut.handle({})
+    expect(result.statusCode).toEqual(204)
+  })
+
   test('Should reeturn internalServerError if loadListSurvey throws', async () => {
     const { sut, loadSurveyStub } = makeSut()
     jest.spyOn(loadSurveyStub, 'loadListSurvey').mockImplementationOnce(() => {
