@@ -6,6 +6,6 @@ export class RoleMongoRepository implements LoadRolesRepository {
   async loadRole (role: string): Promise<Roles> {
     const rolesCollection = await MongoHelper.getCollection('roles')
     const roleValue = await rolesCollection.findOne({ value: role })
-    return MongoHelper.map(roleValue)
+    return roleValue && MongoHelper.map(roleValue)
   }
 }

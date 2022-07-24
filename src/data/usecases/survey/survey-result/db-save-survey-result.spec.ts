@@ -3,8 +3,6 @@ import { SaveSurveyResultRepository } from '../../../protocols/db/db-survey/save
 import { SurveyResultModel } from '../../../../domain/models/survey-result'
 import { SaveSurveyResultModel } from '../../../../domain/usecases/survey/save-survey-result'
 import MockDate from 'mockdate'
-import { LoadSurveyByIdRepository } from '../../../protocols/db/db-survey/load-survey-by-id-repository'
-import { SurveyModel } from '../../../../domain/models/survey'
 
 const makeSaveSurveyResultRepository = (): SaveSurveyResultRepository => {
   class SaveSurveyResultRepositoryStub implements SaveSurveyResultRepository {
@@ -16,30 +14,17 @@ const makeSaveSurveyResultRepository = (): SaveSurveyResultRepository => {
   return new SaveSurveyResultRepositoryStub()
 }
 
-const makeLoadSurveyRepository = (): LoadSurveyByIdRepository => {
-  class LoadSurveyByIdRepositoryStub implements LoadSurveyByIdRepository {
-    async loadById (): Promise<SurveyModel> {
-      return makeFakeSurveyModel()
-    }
-  }
-
-  return new LoadSurveyByIdRepositoryStub()
-}
-
 type SutType = {
   sut: DbSaveSurveyResult
   saveSurveyResultRepositoryStub: SaveSurveyResultRepository
-  loadSurveyRepositoryStub: LoadSurveyByIdRepository
 }
 
 const makeSut = (): SutType => {
   const saveSurveyResultRepositoryStub = makeSaveSurveyResultRepository()
-  const loadSurveyRepositoryStub = makeLoadSurveyRepository()
-  const sut = new DbSaveSurveyResult(saveSurveyResultRepositoryStub, loadSurveyRepositoryStub)
+  const sut = new DbSaveSurveyResult(saveSurveyResultRepositoryStub)
   return {
     sut,
-    saveSurveyResultRepositoryStub,
-    loadSurveyRepositoryStub
+    saveSurveyResultRepositoryStub
   }
 }
 
@@ -56,18 +41,6 @@ const makeFakeSurveyResultModel = (): SurveyResultModel => {
   return {
     id: 'any_id',
     ...makeFakeSurveyResultModelRequest()
-  }
-}
-
-const makeFakeSurveyModel = (): SurveyModel => {
-  return {
-    id: 'any_id',
-    question: 'question',
-    answers: [{
-      image: 'image',
-      answer: 'answer'
-    }],
-    date: new Date()
   }
 }
 

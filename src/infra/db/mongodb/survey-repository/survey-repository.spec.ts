@@ -64,4 +64,13 @@ describe('Survey Repository MongoDB', () => {
       expect(listSurvey.length).toBe(0)
     })
   })
+
+  describe('LoadSurveyById', () => {
+    test('Should return a survey on success', async () => {
+      const sut = new SurveyMongoRepository()
+      const fakeSurveyModel = await surveyCollection.insertOne(makeFakeSurveyModel())
+      const result = await sut.loadById(fakeSurveyModel.insertedId.toString())
+      expect(result).toBeTruthy()
+    })
+  })
 })

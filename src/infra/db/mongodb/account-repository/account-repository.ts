@@ -13,7 +13,7 @@ LoadAccountByEmailRepository, UpdateAccessTokenRepository, LoadAccountByTokenRep
     const accountCollection = await MongoHelper.getCollection('accounts')
     const result = await accountCollection.insertOne(accountData)
     const resultFind = await accountCollection.findOne(result.insertedId)
-    return MongoHelper.map(resultFind)
+    return resultFind && MongoHelper.map(resultFind)
   }
 
   async loadByEmail (email: string): Promise<AccountModel> {
