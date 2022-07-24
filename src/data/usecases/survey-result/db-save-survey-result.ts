@@ -1,6 +1,6 @@
-import { SurveyResultModel } from '../../../../domain/models/survey-result'
-import { SaveSurveyResult, SaveSurveyResultModel } from '../../../../domain/usecases/survey/save-survey-result'
-import { SaveSurveyResultRepository } from '../../../protocols/db/db-survey/save-survey-result-repository'
+import { SurveyResultModel } from '../../../domain/models/survey-result'
+import { SaveSurveyResult, SaveSurveyResultModel } from '../../../domain/usecases/survey-result/save-survey-result'
+import { SaveSurveyResultRepository } from '../../protocols/db/db-survey-result/save-survey-result-repository'
 
 export class DbSaveSurveyResult implements SaveSurveyResult {
   private readonly saveSurveyResultRepository: SaveSurveyResultRepository

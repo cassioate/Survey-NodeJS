@@ -2,8 +2,8 @@
 import { MongoHelper } from '../helpers/mongo-helper'
 import env from '../../../../main/config/env'
 import { Collection, ObjectId } from 'mongodb'
-import { SurveyResultsMongoRepository } from './survey-result-repository'
-import { SaveSurveyResultModel } from '../../../../domain/usecases/survey/save-survey-result'
+import { SurveyResultMongoRepository } from './survey-result-repository'
+import { SaveSurveyResultModel } from '../../../../domain/usecases/survey-result/save-survey-result'
 
 let surveyCollection: Collection
 let accountCollection: Collection
@@ -59,7 +59,7 @@ describe('Survey Repository MongoDB', () => {
 
   describe('SurveyResultsRepository', () => {
     test('Should return an survey on save success', async () => {
-      const sut = new SurveyResultsMongoRepository()
+      const sut = new SurveyResultMongoRepository()
       const fakeRequest = await makeFakeSurveyResultModelRequest()
       const result = await sut.save(fakeRequest)
       expect(result).toBeTruthy()
@@ -70,7 +70,7 @@ describe('Survey Repository MongoDB', () => {
     })
 
     test('Should return an survey on save success if already has a register in the database', async () => {
-      const sut = new SurveyResultsMongoRepository()
+      const sut = new SurveyResultMongoRepository()
       const fakeRequest = await makeFakeSurveyResultModelRequest()
 
       const saved = await surveyResultsCollection.insertOne({

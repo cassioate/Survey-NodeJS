@@ -1,4 +1,4 @@
-import { LoadRolesRepository } from '../../../../data/protocols/db/roles/load-roles-repository'
+import { LoadRolesRepository } from '../../../../data/protocols/db/db-roles/load-roles-repository'
 import { Roles } from '../../../../domain/models/roles'
 import { MongoHelper } from '../helpers/mongo-helper'
 
