@@ -4,6 +4,7 @@ import { ForbiddenError } from '../../errors/forbidden-error'
 import { LoadAccountByToken } from '../../../domain/usecases/account/load-account-by-access-token'
 import { AccountModel } from '../../../domain/models/account'
 import { httpServerError } from '../../helpers/http/http-helper'
+import { InternalServerError } from '../../errors'
 
 const makeFakeAccount = (): AccountModel => {
   return {
@@ -85,7 +86,7 @@ describe('Auth Middleware', () => {
     const { sut } = makeSut()
     const httpRequest = makeHttpRequest()
     const result = await sut.handle(httpRequest)
-    expect(result.body).toEqual('any_id')
+    expect(result.body).toEqual({ accountId: 'any_id' })
   })
 
   test('Should return a server error if loadByTokenAccountByToken throws', async () => {
@@ -95,6 +96,6 @@ describe('Auth Middleware', () => {
     })
     const httpRequest = makeHttpRequest()
     const result = await sut.handle(httpRequest)
-    expect(result.body.message).toEqual(httpServerError(new Error()).body.message)
+    expect(result.body.message).toEqual(httpServerError(new InternalServerError('stack')).body.message)
   })
 })
