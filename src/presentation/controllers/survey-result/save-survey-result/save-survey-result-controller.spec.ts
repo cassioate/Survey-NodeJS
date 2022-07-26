@@ -131,7 +131,7 @@ describe('SaveSurveyResultController', () => {
     httpRequest.body.answer = 'answer_not_exist'
     const result = await sut.handle(httpRequest)
     expect(result.statusCode).toEqual(403)
-    expect(result.body.message).toEqual(new InvalidParamError('answer').message)
+    expect(result.body.message).toEqual(new InvalidParamError('answer not exist').message)
   })
 
   test('Should return 200 and return a surveyResult if all goes right', async () => {

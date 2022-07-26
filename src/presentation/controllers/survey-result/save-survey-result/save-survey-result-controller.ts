@@ -25,7 +25,7 @@ export class SaveSurveyResultController implements Controller {
       const { answers } = survey
       const answerIsValid = answers.filter(filter => filter.answer === answer)
       if (answerIsValid.length === 0) {
-        return httpForbidden(new InvalidParamError('answer'))
+        return httpForbidden(new InvalidParamError('answer not exist'))
       }
       const surveyResult = await this.SaveSurveyResultRepository.save(
         {
