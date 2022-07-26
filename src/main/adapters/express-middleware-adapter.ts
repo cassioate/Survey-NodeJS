@@ -10,7 +10,6 @@ export const adaptMiddleware = (middleware: Middleware) => {
     const httpResponse = await middleware.handle(httpRequest)
     if (httpResponse.statusCode === 200) {
       // "httResponse.body === accountId" to be used inside the httpRequest after authentication
-      console.log(httpResponse.body)
       Object.assign(req, httpResponse.body)
       next()
     } else {
