@@ -1,4 +1,14 @@
 import { AccountModel, AddAccountParams } from '../../../../src/domain/models/account'
+import { HttpRequest } from '../../../../src/presentation/protocols'
+
+export const makeFakeAddAccountHttpRequest = (): HttpRequest => {
+  return {
+    headers: {
+      'x-access-token': 'any_token'
+    },
+    body: makeFakeAddAccountParamsWithPassConfirmation()
+  }
+}
 
 export const makeFakeAccount = (): AccountModel => {
   return {
