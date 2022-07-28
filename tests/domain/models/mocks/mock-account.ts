@@ -16,3 +16,10 @@ export const makeFakeAddAccountParams = (): AddAccountParams => {
     password: 'any_password'
   }
 }
+
+export const makeFakeAddAccountParamsWithPassConfirmation = (): any => {
+  return {
+    ...makeFakeAddAccountParams(),
+    passwordConfirmation: 'any_password'
+  }
+}

@@ -1,15 +1,8 @@
 import { InvalidParamError } from '../../../src/presentation/errors'
 import { Validation } from '../../../src/presentation/protocols'
 import { ValidationComposite } from '../../../src/validation/validators/validation-composite'
-
-const makeValidationStub = (): Validation => {
-  class ValidationStub implements Validation {
-    async validate (input: any): Promise<Error> {
-      return undefined as unknown as Error
-    }
-  }
-  return new ValidationStub()
-}
+import { makeFakeAddAccountParamsWithPassConfirmation } from '../../domain/models/mocks/mock-account'
+import { makeValidationStub } from '../mocks/validation-mocks'
 
 interface SutType {
   sut: ValidationComposite
@@ -25,20 +18,13 @@ const makeSut = (): SutType => {
   }
 }
 
-const fakeBody = {
-  name: 'Cassio',
-  email: 'cassio@gmail.com',
-  password: '123456',
-  passwordConfirmation: '123456'
-}
-
 describe('ValidationRequiredFields', () => {
   test('Should validate return undefined', async () => {
     const { sut, validationStub } = makeSut()
     jest.spyOn(validationStub, 'validate').mockImplementation(async () => {
       return new InvalidParamError('passwordConfirmation')
     })
-    const newFakeBody = { ...fakeBody }
+    const newFakeBody = { ...makeFakeAddAccountParamsWithPassConfirmation() }
     newFakeBody.passwordConfirmation = 'invalid_password'
     const result = await sut.validate(newFakeBody)
     expect(result).toEqual(new InvalidParamError('passwordConfirmation'))
@@ -46,7 +32,7 @@ describe('ValidationRequiredFields', () => {
 
   test('Should validate return undefined', async () => {
     const { sut } = makeSut()
-    const result = await sut.validate(fakeBody)
+    const result = await sut.validate(makeFakeAddAccountParamsWithPassConfirmation())
     expect(result).toBe(undefined)
   })
 })

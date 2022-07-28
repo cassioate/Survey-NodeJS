@@ -6,6 +6,9 @@ export const makeFakeSurveyParams = (): AddSurveyParams => {
     answers: [{
       image: 'image',
       answer: 'answer'
+    }, {
+      image: 'image2',
+      answer: 'answer2'
     }],
     date: new Date()
   }
