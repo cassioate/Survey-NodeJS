@@ -5,23 +5,9 @@ import { AddSurveyController } from '../../../../../src/presentation/controllers
 import { AddSurvey } from '../../../../../src/domain/usecases/survey/add-survey'
 import { httpNoContent } from '../../../../../src/presentation/helpers/http/http-helper'
 import MockDate from 'mockdate'
-
-const makeValidationStub = (): Validation => {
-  class ValidationStub implements Validation {
-    async validate (input: any): Promise<Error> {
-      return null as unknown as Error
-    }
-  }
-  return new ValidationStub()
-}
-
-const makeAddSurveyStub = (): AddSurvey => {
-  class DbAddSurveyStub implements AddSurvey {
-    async add (survey: any): Promise<void> {
-    }
-  }
-  return new DbAddSurveyStub()
-}
+import { makeValidationStub } from '../../../../validation/mocks/validation-mocks'
+import { makeAddSurveyStub } from '../../../mocks/survey-mocks-stub'
+import { makeFakeSurveyParams } from '../../../../domain/models/mocks/mock-survey'
 
 interface SutTypes {
   sut: AddSurveyController
@@ -41,17 +27,9 @@ const makeSut = (): SutTypes => {
 }
 
 const makeFakeHttpRequest = (): HttpRequest => {
-  const httpRequest = {
-    body: {
-      question: 'any_question',
-      answers: [{
-        answer: 'any_name',
-        image: 'any_answer'
-      }],
-      date: new Date()
-    }
+  return {
+    body: makeFakeSurveyParams()
   }
-  return httpRequest
 }
 
 describe('AddSurvey Controller', () => {
