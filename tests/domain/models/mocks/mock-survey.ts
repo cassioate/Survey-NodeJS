@@ -1,4 +1,11 @@
 import { AddSurveyParams, SurveyModel } from '../../../../src/domain/models/survey'
+import { HttpRequest } from '../../../../src/presentation/protocols'
+
+export const makeFakeSurveyHttpRequest = (): HttpRequest => {
+  return {
+    body: makeFakeSurveyParams()
+  }
+}
 
 export const makeFakeSurveyParams = (): AddSurveyParams => {
   return {

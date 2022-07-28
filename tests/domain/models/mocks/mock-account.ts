@@ -1,5 +1,5 @@
 import { AccountModel, AddAccountParams, AuthenticationParams } from '../../../../src/domain/models/account'
-import { HttpRequest } from '../../../../src/presentation/protocols'
+import { HttpRequest, HttpResponse } from '../../../../src/presentation/protocols'
 
 export const makeFakeAddAccountHttpRequest = (): HttpRequest => {
   return {
@@ -7,6 +7,21 @@ export const makeFakeAddAccountHttpRequest = (): HttpRequest => {
       'x-access-token': 'any_token'
     },
     body: makeFakeAddAccountParamsWithPassConfirmation()
+  }
+}
+
+export const makeFakeAuthenticationRequest = (): HttpRequest => {
+  return {
+    body: makeFakeAuthenticationAccount()
+  }
+}
+
+export const makeFakeAuthenticationResponse = (): HttpResponse => {
+  return {
+    statusCode: 200,
+    body: {
+      accessToken: 'any_token'
+    }
   }
 }
 
