@@ -2,7 +2,7 @@ import { AccountModel } from '../../../domain/models/account'
 import { LoadAccountByToken } from '../../../domain/usecases/account/load-account-by-access-token'
 import { Decrypter } from '../../protocols/criptography/Decrypter'
 import { LoadAccountByTokenRepository } from '../../protocols/db/db-account/load-account-by-token-repository'
-import { LoadRolesRepository } from '../../protocols/db/roles/load-roles-repository'
+import { LoadRolesRepository } from '../../protocols/db/db-roles/load-roles-repository'
 
 export class DbLoadAccountByToken implements LoadAccountByToken {
   private readonly loadAccountByTokenRepository: LoadAccountByTokenRepository

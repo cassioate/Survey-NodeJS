@@ -1,5 +1,5 @@
 
-import { LoadListSurveyController } from '../../../../../presentation/controllers/survey/load-survey/load-list-survey-controller'
+import { LoadListSurveyController } from '../../../../../presentation/controllers/survey/load-list-survey/load-list-survey-controller'
 import { Controller } from '../../../../../presentation/protocols'
 import { makeLogControllerDecorator } from '../../../decorators/log-controller.decorator'
 import { makeDbLoadListSurveyFactory } from '../../../usecases/survey/load-list-survey-factory'

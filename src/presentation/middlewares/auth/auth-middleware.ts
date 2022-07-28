@@ -1,4 +1,5 @@
 import { LoadAccountByToken } from '../../../domain/usecases/account/load-account-by-access-token'
+import { InternalServerError } from '../../errors'
 import { ForbiddenError } from '../../errors/forbidden-error'
 import { httpForbidden, httpOk, httpServerError } from '../../helpers/http/http-helper'
 import { HttpRequest, HttpResponse } from '../../protocols'
@@ -19,12 +20,12 @@ export class AuthMiddleware implements Middleware {
       if (accessToken) {
         const account = await this.loadAccountByToken.loadByToken(accessToken, this.role)
         if (account) {
-          return httpOk(account.id)
+          return httpOk({ accountId: account.id })
         }
       }
       return httpForbidden(new ForbiddenError())
     } catch (error) {
-      return httpServerError(error)
+      return httpServerError(new InternalServerError(error.stack))
     }
   }
 }
