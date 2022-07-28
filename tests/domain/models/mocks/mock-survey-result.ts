@@ -1,4 +1,17 @@
 import { SaveSurveyResultParams, SurveyResultModel } from '../../../../src/domain/models/survey-result'
+import { HttpRequest } from '../../../../src/presentation/protocols'
+
+export const makeFakeSurveyResultHttpRequest = (): HttpRequest => {
+  return {
+    params: {
+      surveyId: 'any_id'
+    },
+    body: {
+      answer: 'answer'
+    },
+    accountId: 'any_account_id'
+  }
+}
 
 export const makeFakeSurveyResultModel = (): SurveyResultModel => {
   return {

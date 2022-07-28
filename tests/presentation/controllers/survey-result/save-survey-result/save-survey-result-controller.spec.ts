@@ -1,30 +1,12 @@
 import { SurveyModel } from '../../../../../src/domain/models/survey'
-import { SaveSurveyResultParams, SurveyResultModel } from '../../../../../src/domain/models/survey-result'
 import { LoadSurveyById } from '../../../../../src/domain/usecases/survey/load-survey-by-id'
 import { InternalServerError, InvalidParamError } from '../../../../../src/presentation/errors'
-import { HttpRequest } from '../../../../../src/presentation/protocols'
 import { SaveSurveyResultController } from '../../../../../src/presentation/controllers/survey-result/save-survey-result/save-survey-result-controller'
 import { SaveSurveyResult } from '../../../../../src/domain/usecases/survey-result/save-survey-result'
 import MockDate from 'mockdate'
 import { httpServerError } from '../../../../../src/presentation/helpers/http/http-helper'
-
-const makeLoadSurveyRepositoryStub = (): LoadSurveyById => {
-  class LoadSurveyRepositoryStub implements LoadSurveyById {
-    async loadById (id: string): Promise<SurveyModel> {
-      return makeFakeSurveyModel()
-    }
-  }
-  return new LoadSurveyRepositoryStub()
-}
-
-const makeSaveSurveyResultRepositoryStub = (): SaveSurveyResult => {
-  class SaveSurveyResultRepositoryStub implements SaveSurveyResult {
-    async save (saveSurveyResult: SaveSurveyResultParams): Promise<SurveyResultModel> {
-      return makeFakeSurveyResultModel()
-    }
-  }
-  return new SaveSurveyResultRepositoryStub()
-}
+import { makeLoadSurveyRepositoryStub, makeSaveSurveyResultRepositoryStub } from '../../../mocks/survey-result-mocks-stub'
+import { makeFakeSurveyResultHttpRequest, makeFakeSurveyResultModel } from '../../../../domain/models/mocks/mock-survey-result'
 
 interface SutTypes {
   sut: SaveSurveyResultController
@@ -44,40 +26,6 @@ const makeSut = (): SutTypes => {
   }
 }
 
-const makeFakeSurveyModel = (): SurveyModel => {
-  return {
-    id: 'any_id',
-    question: 'question',
-    answers: [{
-      image: 'image',
-      answer: 'answer'
-    }],
-    date: new Date()
-  }
-}
-
-const makeFakeSurveyResultModel = (): SurveyResultModel => {
-  return {
-    id: 'any_id',
-    surveyId: 'survey_id',
-    accountId: 'account_id',
-    answer: 'answer',
-    date: new Date()
-  }
-}
-
-const makeFakeHttpRequest = (): HttpRequest => {
-  return {
-    params: {
-      surveyId: 'any_id'
-    },
-    body: {
-      answer: 'answer'
-    },
-    accountId: 'any_account_id'
-  }
-}
-
 describe('SaveSurveyResultController', () => {
   beforeAll(() => {
     MockDate.set(new Date())
@@ -90,7 +38,7 @@ describe('SaveSurveyResultController', () => {
   test('Should loadyById be called with correct values', async () => {
     const { sut, loadSurveyRepositoryStub } = makeSut()
     const spyOn = jest.spyOn(loadSurveyRepositoryStub, 'loadById')
-    const httpRequest = makeFakeHttpRequest()
+    const httpRequest = makeFakeSurveyResultHttpRequest()
     await sut.handle(httpRequest)
     expect(spyOn).toBeCalledWith(httpRequest.params.surveyId)
   })
@@ -99,7 +47,7 @@ describe('SaveSurveyResultController', () => {
     const { sut, saveSurveyResultoStub } = makeSut()
     const spyOn = jest.spyOn(saveSurveyResultoStub, 'save')
 
-    const httpRequest = makeFakeHttpRequest()
+    const httpRequest = makeFakeSurveyResultHttpRequest()
     const { surveyId } = httpRequest.params
     const { answer } = httpRequest.body
     const { accountId } = httpRequest
@@ -118,7 +66,7 @@ describe('SaveSurveyResultController', () => {
     jest.spyOn(loadSurveyRepositoryStub, 'loadById').mockImplementationOnce(async () => {
       return null as unknown as SurveyModel
     })
-    const httpRequest = makeFakeHttpRequest()
+    const httpRequest = makeFakeSurveyResultHttpRequest()
     httpRequest.params.surveyId = 'id_not_exist_in_database'
     const result = await sut.handle(httpRequest)
     expect(result.statusCode).toEqual(403)
@@ -127,7 +75,7 @@ describe('SaveSurveyResultController', () => {
 
   test('Should return 403 if answer in the request is not valid', async () => {
     const { sut } = makeSut()
-    const httpRequest = makeFakeHttpRequest()
+    const httpRequest = makeFakeSurveyResultHttpRequest()
     httpRequest.body.answer = 'answer_not_exist'
     const result = await sut.handle(httpRequest)
     expect(result.statusCode).toEqual(403)
@@ -136,7 +84,7 @@ describe('SaveSurveyResultController', () => {
 
   test('Should return 200 and return a surveyResult if all goes right', async () => {
     const { sut } = makeSut()
-    const result = await sut.handle(makeFakeHttpRequest())
+    const result = await sut.handle(makeFakeSurveyResultHttpRequest())
     expect(result.body).toEqual(makeFakeSurveyResultModel())
   })
 
@@ -145,7 +93,7 @@ describe('SaveSurveyResultController', () => {
     jest.spyOn(saveSurveyResultoStub, 'save').mockImplementationOnce(() => {
       throw new Error('error mocked')
     })
-    const result = await sut.handle(makeFakeHttpRequest())
+    const result = await sut.handle(makeFakeSurveyResultHttpRequest())
     expect(result.body.message).toEqual(httpServerError(new InternalServerError('stack')).body.message)
   })
 })
