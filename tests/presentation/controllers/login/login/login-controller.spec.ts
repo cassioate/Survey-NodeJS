@@ -4,24 +4,8 @@ import { HttpRequest, HttpResponse } from '../../../../../src/presentation/contr
 import { LoginController } from '../../../../../src/presentation/controllers/login/login/login-controller'
 import { Validation } from '../../../../../src/presentation/protocols/validation'
 import { httpBadRequest } from '../../../../../src/presentation/helpers/http/http-helper'
-
-const makeAuthenticationStub = (): Authentication => {
-  class AuthenticationStub implements Authentication {
-    async auth (authentication: AuthenticationModel): Promise<string> {
-      return 'any_token'
-    }
-  }
-  return new AuthenticationStub()
-}
-
-const makeValidationStub = (): Validation => {
-  class ValidationStub implements Validation {
-    async validate (input: any): Promise<Error> {
-      return null as unknown as Error
-    }
-  }
-  return new ValidationStub()
-}
+import { makeAuthenticationStub } from '../../../mocks/account-mocks-stub'
+import { makeValidationStub } from '../../../../validation/mocks/validation-mocks'
 
 interface SutTypes {
   sut: LoginController

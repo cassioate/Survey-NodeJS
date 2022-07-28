@@ -4,7 +4,7 @@ import { LoadAccountByToken } from '../../../../src/domain/usecases/account/load
 import { AccountModel } from '../../../../src/domain/models/account'
 import { httpServerError } from '../../../../src/presentation/helpers/http/http-helper'
 import { InternalServerError } from '../../../../src/presentation/errors'
-import { makeLoadAccountByToken } from '../../mocks/account-mocks'
+import { makeLoadAccountByTokenStub } from '../../mocks/account-mocks-stub'
 import { makeFakeAddAccountHttpRequest } from '../../../domain/models/mocks/mock-account'
 
 interface SutTypes {
@@ -13,7 +13,7 @@ interface SutTypes {
 }
 
 const makeSut = (role?: string): SutTypes => {
-  const loadByTokenAccountByToken = makeLoadAccountByToken()
+  const loadByTokenAccountByToken = makeLoadAccountByTokenStub()
   const sut = new AuthMiddleware(loadByTokenAccountByToken, role)
   return {
     sut,
