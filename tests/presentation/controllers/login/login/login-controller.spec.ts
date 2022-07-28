@@ -1,4 +1,4 @@
-import { Authentication, AuthenticationModel } from '../../../../../src/domain/usecases/authentication/authentication'
+import { Authentication } from '../../../../../src/domain/usecases/authentication/authentication'
 import { MissingParamError, UnauthorizedError } from '../../../../../src/presentation/errors'
 import { HttpRequest, HttpResponse } from '../../../../../src/presentation/controllers/login/signup/signup-protocols'
 import { LoginController } from '../../../../../src/presentation/controllers/login/login/login-controller'
@@ -6,6 +6,7 @@ import { Validation } from '../../../../../src/presentation/protocols/validation
 import { httpBadRequest } from '../../../../../src/presentation/helpers/http/http-helper'
 import { makeAuthenticationStub } from '../../../mocks/account-mocks-stub'
 import { makeValidationStub } from '../../../../validation/mocks/validation-mocks'
+import { makeFakeAuthenticationAccount } from '../../../../domain/models/mocks/mock-account'
 
 interface SutTypes {
   sut: LoginController
@@ -26,10 +27,7 @@ const makeSut = (): SutTypes => {
 
 const makeFakeRequest = (): HttpRequest => {
   return {
-    body: {
-      email: 'email@email.com',
-      password: 'pass_valid'
-    }
+    body: makeFakeAuthenticationAccount()
   }
 }
 
@@ -39,13 +37,6 @@ const makeFakeResponse = (): HttpResponse => {
     body: {
       accessToken: 'any_token'
     }
-  }
-}
-
-const makeFakeCalledWith = (): AuthenticationModel => {
-  return {
-    email: 'email@email.com',
-    password: 'pass_valid'
   }
 }
 
@@ -71,7 +62,7 @@ describe('Login Controller', () => {
     const { sut, authenticationStub } = makeSut()
     const spyOnAuth = jest.spyOn(authenticationStub, 'auth')
     await sut.handle(makeFakeRequest())
-    expect(spyOnAuth).toBeCalledWith(makeFakeCalledWith())
+    expect(spyOnAuth).toBeCalledWith(makeFakeAuthenticationAccount())
   })
 
   test('Should return 200 and a correct access_token if account is authorized', async () => {

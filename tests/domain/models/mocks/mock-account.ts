@@ -1,4 +1,4 @@
-import { AccountModel, AddAccountParams } from '../../../../src/domain/models/account'
+import { AccountModel, AddAccountParams, AuthenticationParams } from '../../../../src/domain/models/account'
 import { HttpRequest } from '../../../../src/presentation/protocols'
 
 export const makeFakeAddAccountHttpRequest = (): HttpRequest => {
@@ -14,6 +14,13 @@ export const makeFakeAccount = (): AccountModel => {
   return {
     id: 'any_id',
     name: 'any_name',
+    email: 'any_email@email.com',
+    password: 'any_password'
+  }
+}
+
+export const makeFakeAuthenticationAccount = (): AuthenticationParams => {
+  return {
     email: 'any_email@email.com',
     password: 'any_password'
   }

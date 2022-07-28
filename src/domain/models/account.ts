@@ -13,3 +13,8 @@ export interface AddAccountParams {
   email: string
   password: string
 }
+
+export interface AuthenticationParams {
+  email: string
+  password: string
+}

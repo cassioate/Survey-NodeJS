@@ -1,7 +1,7 @@
-import { AccountModel, AddAccountParams } from '../../../src/domain/models/account'
+import { AccountModel, AddAccountParams, AuthenticationParams } from '../../../src/domain/models/account'
 import { AddAccount } from '../../../src/domain/usecases/account/add-account'
 import { LoadAccountByToken } from '../../../src/domain/usecases/account/load-account-by-access-token'
-import { Authentication, AuthenticationModel } from '../../../src/domain/usecases/authentication/authentication'
+import { Authentication } from '../../../src/domain/usecases/authentication/authentication'
 import { makeFakeAccount } from '../../domain/models/mocks/mock-account'
 
 export const makeLoadAccountByTokenStub = (): LoadAccountByToken => {
@@ -24,7 +24,7 @@ export const makeAddAccountStub = (): AddAccount => {
 
 export const makeAuthenticationStub = (): Authentication => {
   class AuthenticationStub implements Authentication {
-    async auth (authentication: AuthenticationModel): Promise<string> {
+    async auth (authentication: AuthenticationParams): Promise<string> {
       return 'any_token'
     }
   }
