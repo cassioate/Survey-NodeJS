@@ -2,16 +2,7 @@ import { SurveyModel } from '../../../../../src/domain/models/survey'
 import { LoadSurveyByIdRepository } from '../../../../../src/data/protocols/db/db-survey/load-survey-by-id-repository'
 import { DbLoadSurveyById } from '../../../../../src/data/usecases/survey/load-survey/db-load-survey-by-id'
 import MockDate from 'mockdate'
-
-const makeLoadSurveyRepository = (): LoadSurveyByIdRepository => {
-  class LoadSurveyByIdRepositoryStub implements LoadSurveyByIdRepository {
-    async loadById (): Promise<SurveyModel> {
-      return makeFakeSurveyModel()
-    }
-  }
-
-  return new LoadSurveyByIdRepositoryStub()
-}
+import { makeLoadSurveyRepositoryStub } from '../../../mocks/db-survey-mock'
 
 type SutType = {
   sut: DbLoadSurveyById
@@ -19,7 +10,7 @@ type SutType = {
 }
 
 const makeSut = (): SutType => {
-  const loadSurveyRepositoryStub = makeLoadSurveyRepository()
+  const loadSurveyRepositoryStub = makeLoadSurveyRepositoryStub()
   const sut = new DbLoadSurveyById(loadSurveyRepositoryStub)
   return {
     sut,

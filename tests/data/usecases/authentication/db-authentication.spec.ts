@@ -2,57 +2,10 @@ import { HashComparer } from '../../../../src/data/protocols/criptography/hash-c
 import { Encrypter } from '../../../../src/data/protocols/criptography/encrypter'
 import { UpdateAccessTokenRepository } from '../../../../src/data/protocols/db/db-account/update-access-token-repository'
 import { LoadAccountByEmailRepository } from '../../../../src/data/protocols/db/db-account/load-account-by-email-repository'
-import { AccountModel } from '../../../../src/domain/models/account'
 import { DbAuthentication } from '../../../../src/data/usecases/authentication/db-authentication'
 import { makeFakeAuthenticationAccount } from '../../../domain/models/mocks/mock-account'
-
-const makeFakeAccount = (): AccountModel => {
-  return {
-    id: 'any_id',
-    name: 'any_name',
-    email: 'any_email@email.com',
-    password: 'any_password'
-  }
-}
-
-const makeLoadAccountByEmailRepositoryStub = (): LoadAccountByEmailRepository => {
-  class LoadAccountByEmailRepositoryStub implements LoadAccountByEmailRepository {
-    async loadByEmail (email: string): Promise<AccountModel> {
-      // return makeFakeAccount()
-      return {
-        ...makeFakeAccount(),
-        password: 'hashed_password'
-      }
-    }
-  }
-  return new LoadAccountByEmailRepositoryStub()
-}
-
-const makeHashComparerStub = (): HashComparer => {
-  class HashComparerStub implements HashComparer {
-    async compare (email: string): Promise<boolean> {
-      return true
-    }
-  }
-  return new HashComparerStub()
-}
-
-const makeEncrypterStub = (): Encrypter => {
-  class EncrypterStub implements Encrypter {
-    async encrypt (accountId: string): Promise<string> {
-      return 'token_authenticated'
-    }
-  }
-  return new EncrypterStub()
-}
-
-const makeUpdateAccessTokenRepositoryStub = (): UpdateAccessTokenRepository => {
-  class UpdateAccessTokenRepositoryStub implements UpdateAccessTokenRepository {
-    async updateAccessToken (accountId: string, accessToken: string): Promise<void> {
-    }
-  }
-  return new UpdateAccessTokenRepositoryStub()
-}
+import { makeLoadAccountByEmailRepositoryStub } from '../../mocks/db-account-mock'
+import { makeEncrypterStub, makeHashComparerStub, makeUpdateAccessTokenRepositoryStub } from '../../mocks/db-authentication'
 
 interface SutTypes {
   sut: DbAuthentication

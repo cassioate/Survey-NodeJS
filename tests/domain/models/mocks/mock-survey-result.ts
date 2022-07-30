@@ -13,9 +13,8 @@ export const makeFakeSurveyResultHttpRequest = (): HttpRequest => {
   }
 }
 
-export const makeFakeSurveyResultModel = (): SurveyResultModel => {
+export const makeFakeSaveSurveyResultParams = (): SaveSurveyResultParams => {
   return {
-    id: 'any_id',
     surveyId: 'survey_id',
     accountId: 'account_id',
     answer: 'answer',
@@ -23,11 +22,9 @@ export const makeFakeSurveyResultModel = (): SurveyResultModel => {
   }
 }
 
-export const makeFakeSaveSurveyResultParams = (): SaveSurveyResultParams => {
+export const makeFakeSurveyResultModel = (): SurveyResultModel => {
   return {
-    surveyId: 'survey_id',
-    accountId: 'account_id',
-    answer: 'answer',
-    date: new Date()
+    id: 'any_id',
+    ...makeFakeSaveSurveyResultParams()
   }
 }

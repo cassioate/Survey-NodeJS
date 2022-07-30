@@ -5,8 +5,9 @@ import { SaveSurveyResultController } from '../../../../../src/presentation/cont
 import { SaveSurveyResult } from '../../../../../src/domain/usecases/survey-result/save-survey-result'
 import MockDate from 'mockdate'
 import { httpServerError } from '../../../../../src/presentation/helpers/http/http-helper'
-import { makeLoadSurveyRepositoryStub, makeSaveSurveyResultRepositoryStub } from '../../../mocks/survey-result-mocks-stub'
+// import { makeLoadSurveyRepositoryStub, makeSaveSurveyResultRepositoryStub } from '../../../mocks/survey-result-mocks-stub'
 import { makeFakeSurveyResultHttpRequest, makeFakeSurveyResultModel } from '../../../../domain/models/mocks/mock-survey-result'
+import { makeLoadSurveyByIdStub, makeSaveSurveyResultStub } from '../../../mocks/survey-result-mocks-stub'
 
 interface SutTypes {
   sut: SaveSurveyResultController
@@ -15,8 +16,8 @@ interface SutTypes {
 }
 
 const makeSut = (): SutTypes => {
-  const loadSurveyRepositoryStub = makeLoadSurveyRepositoryStub()
-  const saveSurveyResultoStub = makeSaveSurveyResultRepositoryStub()
+  const loadSurveyRepositoryStub = makeLoadSurveyByIdStub()
+  const saveSurveyResultoStub = makeSaveSurveyResultStub()
 
   const sut = new SaveSurveyResultController(loadSurveyRepositoryStub, saveSurveyResultoStub)
   return {

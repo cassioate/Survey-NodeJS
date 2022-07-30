@@ -33,6 +33,17 @@ export const makeFakeSurveyModel = (): SurveyModel => {
   }
 }
 
+export const makeFakeSurveyModelParam = (): AddSurveyParams => {
+  return {
+    question: 'question',
+    answers: [{
+      image: 'image',
+      answer: 'answer'
+    }],
+    date: new Date()
+  }
+}
+
 export const makeFakeListSurvey = (): SurveyModel[] => {
   const listSurvey = [
     {

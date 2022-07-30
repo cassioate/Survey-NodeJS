@@ -1,32 +1,9 @@
 import { LogErrorRepository } from '../../../src/data/protocols/db/db-log/log-error-repository'
 import { InternalServerError } from '../../../src/presentation/errors/index'
-import { Controller, HttpRequest, HttpResponse } from '../../../src/presentation/protocols'
+import { Controller } from '../../../src/presentation/protocols'
 import { LogControllerDecorator } from '../../../src/main/decorators/log-controller-decorator'
 import { httpServerError } from '../../../src/presentation/helpers/http/http-helper'
-
-const makeControllerStub = (): Controller => {
-  class ControllerStub implements Controller {
-    async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
-      const response = {
-        statusCode: 200,
-        body: {
-          name: 'valid_name'
-        }
-      }
-      return response
-    }
-  }
-  return new ControllerStub()
-}
-
-const makeLogRepositoryStub = (): LogErrorRepository => {
-  class LogRepositoryStub implements LogErrorRepository {
-    async logError (stack: string): Promise<void> {
-      return null
-    }
-  }
-  return new LogRepositoryStub()
-}
+import { makeControllerStub, makeFakeHttpRequest, makeFakeHttpResponse, makeLogRepositoryStub } from '../mocks/decorator-mocks'
 
 interface SutTypes{
   sut: LogControllerDecorator
@@ -43,26 +20,6 @@ const makeSut = (): SutTypes => {
     controllerStub,
     logErrorRepositoryStub
   }
-}
-
-const makeFakeHttpRequest = (): HttpRequest => {
-  const httpRequest = {
-    body: {
-      name: 'valid_name',
-      email: 'valid_email'
-    }
-  }
-  return httpRequest
-}
-
-const makeFakeHttpResponse = (): HttpResponse => {
-  const response = {
-    statusCode: 200,
-    body: {
-      name: 'valid_name'
-    }
-  }
-  return response
 }
 
 describe('Log Decorator', () => {

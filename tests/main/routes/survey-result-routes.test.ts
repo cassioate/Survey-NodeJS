@@ -4,65 +4,11 @@ import request from 'supertest'
 import app from '../../../src/main/config/app'
 import env from '../../../src/main/config/env'
 import { Collection } from 'mongodb'
-import { JwtAdapter } from '../../../src/infra/criptography/jwt-adapter/jwt-adapter'
 import { setUpRoles } from '../../../src/main/config/roles'
-import { AddSurveyParams, SurveyModel } from '../../../src/domain/models/survey'
+import { findSurveyInDatabase, insertSurveyInDatabase, makeAccessToken, makeAnswer } from '../mocks/routes-mocks'
 
 let surveyCollection: Collection
 let accountCollection: Collection
-
-const makeAccessToken = async (roleId: number, role: string): Promise<string> => {
-  const account = await accountCollection.insertOne({
-    name: 'any_name',
-    email: 'any_email',
-    password: 'any_password',
-    role: {
-      id: roleId,
-      value: role
-    }
-  })
-
-  const jwtAdapter = new JwtAdapter(env.jwtSecret)
-  const accessToken = await jwtAdapter.encrypt(account.insertedId.toString())
-
-  await accountCollection.updateOne({
-    _id: account.insertedId
-  }, {
-    $set: {
-      accessToken
-    }
-  })
-
-  return accessToken
-}
-
-const insertSurveyInDatabase = async (): Promise<void> => {
-  await surveyCollection.insertOne(makeFakeSurveyModel())
-}
-
-const findSurveyInDatabase = async (): Promise<SurveyModel> => {
-  const result = await surveyCollection.findOne({ question: 'question' })
-  console.log(result)
-  return result && MongoHelper.map(result)
-}
-
-const makeFakeSurveyModel = (): AddSurveyParams => {
-  return {
-    question: 'question',
-    answers: [{
-      image: 'image',
-      answer: 'answer'
-    }],
-    date: new Date()
-  }
-}
-
-const makeAnswer = (): any => {
-  return {
-    answer: 'answer'
-  }
-}
-
 describe('Survey Result Routes', () => {
   beforeAll(async () => {
     await MongoHelper.connect(env.mongoUrl)
@@ -90,9 +36,9 @@ describe('Survey Result Routes', () => {
     })
 
     test('Should survey-results return 200 on success', async () => {
-      const accessToken = await makeAccessToken(1, 'admin')
-      await insertSurveyInDatabase()
-      const { id } = await findSurveyInDatabase()
+      const accessToken = await makeAccessToken(accountCollection, 1, 'admin')
+      await insertSurveyInDatabase(surveyCollection)
+      const { id } = await findSurveyInDatabase(surveyCollection)
 
       await request(app)
         .put(`/api/surveys/${id}/results`)

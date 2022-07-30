@@ -5,7 +5,7 @@ import { LoadSurveyById } from '../../../src/domain/usecases/survey/load-survey-
 import { makeFakeSurveyModel } from '../../domain/models/mocks/mock-survey'
 import { makeFakeSurveyResultModel } from '../../domain/models/mocks/mock-survey-result'
 
-export const makeLoadSurveyRepositoryStub = (): LoadSurveyById => {
+export const makeLoadSurveyByIdStub = (): LoadSurveyById => {
   class LoadSurveyRepositoryStub implements LoadSurveyById {
     async loadById (id: string): Promise<SurveyModel> {
       return makeFakeSurveyModel()
@@ -14,7 +14,7 @@ export const makeLoadSurveyRepositoryStub = (): LoadSurveyById => {
   return new LoadSurveyRepositoryStub()
 }
 
-export const makeSaveSurveyResultRepositoryStub = (): SaveSurveyResult => {
+export const makeSaveSurveyResultStub = (): SaveSurveyResult => {
   class SaveSurveyResultRepositoryStub implements SaveSurveyResult {
     async save (saveSurveyResult: SaveSurveyResultParams): Promise<SurveyResultModel> {
       return makeFakeSurveyResultModel()

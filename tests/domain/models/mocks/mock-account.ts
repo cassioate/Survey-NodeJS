@@ -30,7 +30,11 @@ export const makeFakeAccount = (): AccountModel => {
     id: 'any_id',
     name: 'any_name',
     email: 'any_email@email.com',
-    password: 'any_password'
+    password: 'any_password',
+    role: {
+      id: 1,
+      value: 'admin'
+    }
   }
 }
 
@@ -53,5 +57,14 @@ export const makeFakeAddAccountParamsWithPassConfirmation = (): any => {
   return {
     ...makeFakeAddAccountParams(),
     passwordConfirmation: 'any_password'
+  }
+}
+
+export const makeFakeAddAccountParamsWithPasswordHashed = (): any => {
+  const { name, email } = makeFakeAddAccountParams()
+  return {
+    name: name,
+    email: email,
+    password: 'hashed_password'
   }
 }
