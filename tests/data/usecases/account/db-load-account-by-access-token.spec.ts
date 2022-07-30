@@ -1,52 +1,12 @@
 import { AccountModel } from '../../../../src/domain/models/account'
-import { Roles } from '../../../../src/domain/models/roles'
 import { Decrypter } from '../../../../src/data/protocols/criptography/Decrypter'
 import { LoadAccountByTokenRepository } from '../../../../src/data/protocols/db/db-account/load-account-by-token-repository'
 import { LoadRolesRepository } from '../../../../src/data/protocols/db/db-roles/load-roles-repository'
 import { DbLoadAccountByToken } from '../../../../src/data/usecases/account/db-load-account-by-access-token'
-
-const makeFakeAccount = (): AccountModel => {
-  return {
-    id: 'any_id',
-    name: 'any_name',
-    email: 'any_email@email.com',
-    password: 'any_password',
-    role: {
-      id: 1,
-      value: 'admin'
-    }
-  }
-}
-
-const makeLoadRolesRepositorySut = (): LoadRolesRepository => {
-  class LoadRolesRepositoryStub implements LoadRolesRepository {
-    async loadRole (role: string): Promise<Roles> {
-      return {
-        id: 1,
-        value: 'admin'
-      }
-    }
-  }
-  return new LoadRolesRepositoryStub()
-}
-
-const makeDecrypterSut = (): Decrypter => {
-  class DecrypterStub implements Decrypter {
-    async decrypt (value: string): Promise<string> {
-      return 'any_value'
-    }
-  }
-  return new DecrypterStub()
-}
-
-const makeLoadAccountByTokenRepository = (): LoadAccountByTokenRepository => {
-  class LoadAccountByTokenRepositoryStub implements LoadAccountByTokenRepository {
-    async loadByToken (token: string, role?: string | undefined): Promise<AccountModel> {
-      return makeFakeAccount()
-    }
-  }
-  return new LoadAccountByTokenRepositoryStub()
-}
+import { makeFakeAccount } from '../../../domain/models/mocks/mock-account'
+import { makeLoadRolesRepositoryStub } from '../../mocks/db-roles-mock'
+import { makeDecrypterStub } from '../../mocks/db-authentication'
+import { makeLoadAccountByTokenStubRepositoryStub } from '../../mocks/db-account-mock'
 
 interface SutTypes {
   sut: DbLoadAccountByToken
@@ -56,9 +16,9 @@ interface SutTypes {
 }
 
 const makeSut = (): SutTypes => {
-  const loadAccountByTokenRepositoryStub = makeLoadAccountByTokenRepository()
-  const decrypterStub = makeDecrypterSut()
-  const loadRolesRepositoryStub = makeLoadRolesRepositorySut()
+  const loadAccountByTokenRepositoryStub = makeLoadAccountByTokenStubRepositoryStub()
+  const decrypterStub = makeDecrypterStub()
+  const loadRolesRepositoryStub = makeLoadRolesRepositoryStub()
   const sut = new DbLoadAccountByToken(decrypterStub, loadAccountByTokenRepositoryStub, loadRolesRepositoryStub)
   return {
     sut,

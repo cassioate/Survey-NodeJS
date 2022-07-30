@@ -1,14 +1,7 @@
 import { AddSurveyParams } from '../../../../../src/domain/models/survey'
 import { AddSurveyRepository } from '../../../../../src/data/protocols/db/db-survey/add-survey-repository'
 import { DbAddSurvey } from '../../../../../src/data/usecases/survey/add-survey/db-add-survey'
-
-const makeAddSurveyRepository = (): AddSurveyRepository => {
-  class AddSurveyRepositoryStub implements AddSurveyRepository {
-    async add (value: AddSurveyParams): Promise<void> {
-    }
-  }
-  return new AddSurveyRepositoryStub()
-}
+import { makeAddSurveyRepositoryStub } from '../../../mocks/db-survey-mock'
 
 interface SutTypes {
   sut: DbAddSurvey
@@ -16,7 +9,7 @@ interface SutTypes {
 }
 
 const makeSut = (): SutTypes => {
-  const addSurveyRepositoryStub = makeAddSurveyRepository()
+  const addSurveyRepositoryStub = makeAddSurveyRepositoryStub()
   const sut = new DbAddSurvey(addSurveyRepositoryStub)
   return {
     sut,

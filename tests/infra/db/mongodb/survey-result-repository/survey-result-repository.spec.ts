@@ -3,41 +3,11 @@ import { MongoHelper } from '../../../../../src/infra/db/mongodb/helpers/mongo-h
 import env from '../../../../../src/main/config/env'
 import { Collection, ObjectId } from 'mongodb'
 import { SurveyResultMongoRepository } from '../../../../../src/infra/db/mongodb/survey-result-repository/survey-result-repository'
-import { SaveSurveyResultParams } from '../../../../../src/domain/models/survey-result'
+import { makeFakeSaveSurveyResultParamsToDB } from '../../../mocks/db-survey-result-mock'
 
 let surveyCollection: Collection
 let accountCollection: Collection
 let surveyResultsCollection: Collection
-
-const makeFakeAccountId = async (): Promise<string> => {
-  const result = await accountCollection.insertOne({
-    name: 'cassio',
-    email: 'cassio@gmail.com',
-    password: '123456'
-  })
-  return result.insertedId.toHexString()
-}
-
-const makeFakeSurveyId = async (): Promise<string> => {
-  const result = await surveyCollection.insertOne({
-    question: 'question',
-    answers: [{
-      image: 'image',
-      answer: 'answer'
-    }],
-    date: new Date()
-  })
-  return result.insertedId.toHexString()
-}
-
-const makeFakeSurveyResultModelRequest = async (): Promise<SaveSurveyResultParams> => {
-  return {
-    surveyId: await makeFakeSurveyId(),
-    accountId: await makeFakeAccountId(),
-    answer: 'answer',
-    date: new Date()
-  }
-}
 
 describe('Survey Repository MongoDB', () => {
   beforeAll(async () => {
@@ -60,7 +30,7 @@ describe('Survey Repository MongoDB', () => {
   describe('SurveyResultsRepository', () => {
     test('Should return an survey on save success', async () => {
       const sut = new SurveyResultMongoRepository()
-      const fakeRequest = await makeFakeSurveyResultModelRequest()
+      const fakeRequest = await makeFakeSaveSurveyResultParamsToDB(accountCollection, surveyCollection)
       const result = await sut.save(fakeRequest)
       expect(result).toBeTruthy()
       expect(result.id).toBeTruthy()
@@ -71,7 +41,7 @@ describe('Survey Repository MongoDB', () => {
 
     test('Should return an survey on save success if already has a register in the database', async () => {
       const sut = new SurveyResultMongoRepository()
-      const fakeRequest = await makeFakeSurveyResultModelRequest()
+      const fakeRequest = await makeFakeSaveSurveyResultParamsToDB(accountCollection, surveyCollection)
 
       const saved = await surveyResultsCollection.insertOne({
         surveyId: new ObjectId(fakeRequest.surveyId),

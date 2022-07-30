@@ -3,20 +3,9 @@ import { MongoHelper } from '../../../../../src/infra/db/mongodb/helpers/mongo-h
 import env from '../../../../../src/main/config/env'
 import { Collection } from 'mongodb'
 import { SurveyMongoRepository } from '../../../../../src/infra/db/mongodb/survey-repository/survey-repository'
-import { AddSurveyParams } from '../../../../../src/domain/models/survey'
+import { makeFakeSurveyModelParam } from '../../../../domain/models/mocks/mock-survey'
 
 let surveyCollection: Collection
-
-const makeFakeSurveyModel = (): AddSurveyParams => {
-  return {
-    question: 'question',
-    answers: [{
-      image: 'image',
-      answer: 'answer'
-    }],
-    date: new Date()
-  }
-}
 
 describe('Survey Repository MongoDB', () => {
   beforeAll(async () => {
@@ -35,7 +24,7 @@ describe('Survey Repository MongoDB', () => {
   describe('AddSurveyRepository', () => {
     test('Should return an survey on add success', async () => {
       const sut = new SurveyMongoRepository()
-      const fakeSurveyModel = makeFakeSurveyModel()
+      const fakeSurveyModel = makeFakeSurveyModelParam()
 
       await sut.add(fakeSurveyModel)
       const result = await surveyCollection.findOne({ question: fakeSurveyModel.question })
@@ -46,9 +35,9 @@ describe('Survey Repository MongoDB', () => {
   describe('LoadListSurveyRepository', () => {
     test('Should return an array of Surveys on success', async () => {
       const sut = new SurveyMongoRepository()
-      const otherSurveyModel = makeFakeSurveyModel()
+      const otherSurveyModel = makeFakeSurveyModelParam()
       otherSurveyModel.question = 'other_question'
-      await surveyCollection.insertMany([makeFakeSurveyModel(), otherSurveyModel])
+      await surveyCollection.insertMany([makeFakeSurveyModelParam(), otherSurveyModel])
 
       const listSurvey = await sut.loadListSurvey()
       expect(listSurvey[0].id).toBeTruthy()
@@ -68,7 +57,7 @@ describe('Survey Repository MongoDB', () => {
   describe('LoadSurveyById', () => {
     test('Should return a survey on success', async () => {
       const sut = new SurveyMongoRepository()
-      const fakeSurveyModel = await surveyCollection.insertOne(makeFakeSurveyModel())
+      const fakeSurveyModel = await surveyCollection.insertOne(makeFakeSurveyModelParam())
       const result = await sut.loadById(fakeSurveyModel.insertedId.toString())
       expect(result).toBeTruthy()
     })

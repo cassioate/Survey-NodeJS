@@ -1,18 +1,10 @@
 
 import { LoadListSurveyController } from '../../../../../src/presentation/controllers/survey/load-list-survey/load-list-survey-controller'
 import MockDate from 'mockdate'
-import { SurveyModel } from '../../../../../src/domain/models/survey'
 import { LoadListSurvey } from '../../../../../src/domain/usecases/survey/load-list-survey'
 import { InternalServerError } from '../../../../../src/presentation/errors'
-
-const makeLoadSurveyStub = (): LoadListSurvey => {
-  class DbLoadSurveyStub implements LoadListSurvey {
-    async loadListSurvey (): Promise<SurveyModel[]> {
-      return makeFakeListSurvey()
-    }
-  }
-  return new DbLoadSurveyStub()
-}
+import { makeLoadSurveyStub } from '../../../mocks/survey-mocks-stub'
+import { makeFakeListSurvey } from '../../../../domain/models/mocks/mock-survey'
 
 interface SutTypes {
   sut: LoadListSurveyController
@@ -26,48 +18,6 @@ const makeSut = (): SutTypes => {
     sut,
     loadSurveyStub
   }
-}
-
-const makeFakeListSurvey = (): SurveyModel[] => {
-  const listSurvey = [
-    {
-      id: 'any_id',
-      question: 'any_question',
-      answers: [{
-        answer: 'any_answer',
-        image: 'any_image'
-      },
-      {
-        answer: 'any_answer2',
-        image: 'any_image2'
-      }],
-      date: new Date()
-    },
-    {
-      id: 'any_id2',
-      question: 'any_question2',
-      answers: [{
-        answer: 'any_answer',
-        image: 'any_image'
-      },
-      {
-        answer: 'any_answer2',
-        image: 'any_image2'
-      },
-      {
-        answer: 'any_answer3',
-        image: 'any_image3'
-      },
-      {
-        answer: 'any_answer4',
-        image: 'any_image4'
-      }
-      ],
-      date: new Date()
-    }
-  ]
-
-  return listSurvey
 }
 
 describe('LoadSurvey Controller', () => {

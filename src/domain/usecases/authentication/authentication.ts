@@ -1,8 +1,5 @@
-export interface AuthenticationModel {
-  email: string
-  password: string
-}
+import { AuthenticationParams } from '../../models/account'
 
 export interface Authentication {
-  auth: (authentication: AuthenticationModel) => Promise<string>
+  auth: (authentication: AuthenticationParams) => Promise<string>
 }

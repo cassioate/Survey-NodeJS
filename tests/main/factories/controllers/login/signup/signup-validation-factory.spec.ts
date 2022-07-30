@@ -1,18 +1,9 @@
 import { Validation } from '../../../../../../src/presentation/protocols/validation'
-import { EmailValidator } from '../../../../../../src/validation/protocols/email-validator'
 import { ValidationRequiredFields, ValidationCompareFields, ValidationEmailValidator, ValidationComposite } from '../../../../../../src/validation/validators'
 import { makeSignUpValidationComposite } from '../../../../../../src/main/factories/controllers/login/signup/signup-validation-factory'
+import { makeEmailValidator } from '../../../../../validation/mocks/email-validator-mock'
 
 jest.mock('../../../../../../src/validation/validators/validation-composite')
-
-const makeEmailValidator = (): EmailValidator => {
-  class EmailValidatorStub implements EmailValidator {
-    isValid (email: string): boolean {
-      return true
-    }
-  }
-  return new EmailValidatorStub()
-}
 
 describe('SignUpValidation Factory', () => {
   test('Should Should call Validation Composite with all validations', async () => {
