@@ -53,9 +53,7 @@ export default {
     error: errorSchema
   },
   components: {
-    securitySchemes: {
-      apiKeyAuth: apiKeyAuthSchema
-    },
+    securitySchemes: apiKeyAuthSchema,
     badRequest,
     unauthorized,
     internalServer,

@@ -1,5 +1,12 @@
 export const apiKeyAuthSchema = {
-  type: 'apiKey',
-  in: 'header',
-  name: 'x-access-token'
+  apiKeyAuth: {
+    type: 'apiKey',
+    in: 'header',
+    name: 'x-access-token'
+  },
+  apiKeyAuthExample: {
+    type: 'apiKey',
+    in: 'header',
+    name: 'x-access-token-Example'
+  }
 }
