@@ -25,8 +25,8 @@ export const signUpPath = {
       400: {
         $ref: '#/components/badRequest'
       },
-      404: {
-        $ref: '#/components/notFound'
+      403: {
+        $ref: '#/components/forbidden'
       },
       500: {
         $ref: '#/components/internalServer'

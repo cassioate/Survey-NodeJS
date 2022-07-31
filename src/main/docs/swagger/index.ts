@@ -8,6 +8,8 @@ import { internalServer } from './components/internal-server'
 import { notFound } from './components/not-found'
 import { signUpSuccess } from './schemas/sign-up-schema'
 import { signUpPath } from './paths/signUpPath'
+import { forbidden } from './components/forbidden'
+import { signUpParamsSchema } from './schemas/sign-up-params-schema'
 
 export default {
   openapi: '3.0.0',
@@ -31,6 +33,7 @@ export default {
   schemas: {
     loginParams: loginParamsSchema,
     loginSuccess: loginSuccess,
+    signUpParams: signUpParamsSchema,
     signUpSuccess: signUpSuccess,
     error: errorSchema
   },
@@ -38,6 +41,7 @@ export default {
     badRequest,
     unauthorized,
     internalServer,
-    notFound
+    notFound,
+    forbidden
   }
 }
