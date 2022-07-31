@@ -19,8 +19,6 @@
     // }
     
   },
-  "include": [
-    "src",
-    "tests"
-  ]
+  "include": ["src", "tests"],
+  "exclude": []
 }
