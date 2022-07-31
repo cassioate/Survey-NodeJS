@@ -1,4 +1,4 @@
-export const signUpSuccess = {
+export const accessTokenSchema = {
   type: 'object',
   properties: {
     accessToken: {
