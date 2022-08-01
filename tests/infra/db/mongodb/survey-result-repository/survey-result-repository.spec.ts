@@ -56,7 +56,7 @@ describe('Survey Repository MongoDB', () => {
       expect(result.date).toBeTruthy()
     })
 
-    test('Should return an SurveyResultModel with all of the answers and percents each one', async () => {
+    test('Should save return an SurveyResultModel with all of the answers and percents each one', async () => {
       const sut = new SurveyResultMongoRepository()
       const fakeRequest = await makeFakeSaveSurveyResultParamsToDB(accountCollection, surveyCollection, 'cassio@gmail.com')
       const fakeRequest2 = { ...fakeRequest }
@@ -79,6 +79,39 @@ describe('Survey Repository MongoDB', () => {
       await surveyResultsCollection.insertMany([fakeRequest, fakeRequest2, fakeRequest3, fakeRequest4, fakeRequest5, fakeRequest6, fakeRequest7])
 
       const result = await sut.save(fakeRequest)
+      expect(result.surveyId).toEqual(fakeRequest.surveyId)
+      expect(result.answers[0].answer).toEqual(fakeRequest.answer)
+      expect(result.answers[0].count).toBe(5)
+      expect(result.answers[1].answer).toEqual(fakeRequest7.answer)
+      expect(result.answers[1].count).toBe(2)
+      expect(result.answers[2].answer).toEqual('no_answer')
+      expect(result.answers[2].count).toBe(0)
+      expect(result.date).toBeTruthy()
+    })
+
+    test('Should loadBySurveyId return an SurveyResultModel with all of the answers and percents each one', async () => {
+      const sut = new SurveyResultMongoRepository()
+      const fakeRequest = await makeFakeSaveSurveyResultParamsToDB(accountCollection, surveyCollection, 'cassio@gmail.com')
+      const fakeRequest2 = { ...fakeRequest }
+      const fakeRequest3 = { ...fakeRequest }
+      const fakeRequest4 = { ...fakeRequest }
+      const fakeRequest5 = { ...fakeRequest }
+      const fakeRequest6 = { ...fakeRequest }
+      const fakeRequest7 = { ...fakeRequest }
+
+      fakeRequest2.accountId = await makeFakeAccountInDB(accountCollection, 'cassio2@gmail.com')
+      fakeRequest3.accountId = await makeFakeAccountInDB(accountCollection, 'cassio3@gmail.com')
+      fakeRequest4.accountId = await makeFakeAccountInDB(accountCollection, 'cassio4@gmail.com')
+      fakeRequest5.accountId = await makeFakeAccountInDB(accountCollection, 'cassio5@gmail.com')
+      fakeRequest6.accountId = await makeFakeAccountInDB(accountCollection, 'cassio6@gmail.com')
+      fakeRequest7.accountId = await makeFakeAccountInDB(accountCollection, 'cassio7@gmail.com')
+
+      fakeRequest6.answer = 'other'
+      fakeRequest7.answer = 'other'
+
+      await surveyResultsCollection.insertMany([fakeRequest, fakeRequest2, fakeRequest3, fakeRequest4, fakeRequest5, fakeRequest6, fakeRequest7])
+
+      const result = await sut.loadBySurveyId(fakeRequest.surveyId)
       expect(result.surveyId).toEqual(fakeRequest.surveyId)
       expect(result.answers[0].answer).toEqual(fakeRequest.answer)
       expect(result.answers[0].count).toBe(5)

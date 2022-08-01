@@ -29,14 +29,18 @@ export const makeFakeSurveyResultModel = (): SurveyResultModel => {
     answers: [{
       image: 'image',
       answer: 'answer',
-      count: 1,
-      percent: 1
-    },
-    {
+      count: 2,
+      percent: 50
+    }, {
       image: 'image2',
       answer: 'answer2',
-      count: 10,
-      percent: 10
+      count: 1,
+      percent: 25
+    }, {
+      image: 'image3',
+      answer: 'answer3',
+      count: 1,
+      percent: 25
     }
     ],
     date: new Date()
