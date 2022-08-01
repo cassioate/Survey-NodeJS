@@ -24,7 +24,21 @@ export const makeFakeSaveSurveyResultParams = (): SaveSurveyResultParams => {
 
 export const makeFakeSurveyResultModel = (): SurveyResultModel => {
   return {
-    id: 'any_id',
-    ...makeFakeSaveSurveyResultParams()
+    surveyId: 'survey_id',
+    question: 'question',
+    answers: [{
+      image: 'image',
+      answer: 'answer',
+      count: 1,
+      percent: 1
+    },
+    {
+      image: 'image2',
+      answer: 'answer2',
+      count: 10,
+      percent: 10
+    }
+    ],
+    date: new Date()
   }
 }
