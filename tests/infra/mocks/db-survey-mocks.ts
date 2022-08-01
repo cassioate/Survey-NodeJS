@@ -9,6 +9,9 @@ export const makeFakeSurveyInDB = async (surveyCollection: Collection): Promise<
     },
     {
       answer: 'other'
+    },
+    {
+      answer: 'no_answer'
     }],
     date: new Date()
   })

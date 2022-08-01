@@ -84,6 +84,8 @@ describe('Survey Repository MongoDB', () => {
       expect(result.answers[0].count).toBe(5)
       expect(result.answers[1].answer).toEqual(fakeRequest7.answer)
       expect(result.answers[1].count).toBe(2)
+      expect(result.answers[2].answer).toEqual('no_answer')
+      expect(result.answers[2].count).toBe(0)
       expect(result.date).toBeTruthy()
     })
   })
