@@ -5,12 +5,12 @@ import { httpForbidden, httpOk, httpServerError } from '../../../helpers/http/ht
 import { Controller, HttpRequest, HttpResponse } from '../../../protocols'
 
 export class SaveSurveyResultController implements Controller {
-  private readonly loadSurveyRepository: LoadSurveyById
-  private readonly SaveSurveyResultRepository: SaveSurveyResult
+  private readonly loadSurveyById: LoadSurveyById
+  private readonly saveSurveyResult: SaveSurveyResult
 
-  constructor (loadSurveyRepository: LoadSurveyById, SaveSurveyResultRepository: SaveSurveyResult) {
-    this.loadSurveyRepository = loadSurveyRepository
-    this.SaveSurveyResultRepository = SaveSurveyResultRepository
+  constructor (loadSurveyById: LoadSurveyById, saveSurveyResult: SaveSurveyResult) {
+    this.loadSurveyById = loadSurveyById
+    this.saveSurveyResult = saveSurveyResult
   }
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -18,7 +18,7 @@ export class SaveSurveyResultController implements Controller {
       const { surveyId } = httpRequest.params
       const { answer } = httpRequest.body
       const { accountId } = httpRequest
-      const survey = await this.loadSurveyRepository.loadById(surveyId)
+      const survey = await this.loadSurveyById.loadById(surveyId)
       if (!survey) {
         return httpForbidden(new InvalidParamError('surveyId'))
       }
@@ -27,7 +27,7 @@ export class SaveSurveyResultController implements Controller {
       if (answerIsValid.length === 0) {
         return httpForbidden(new InvalidParamError('answer not exist'))
       }
-      const surveyResult = await this.SaveSurveyResultRepository.save(
+      const surveyResult = await this.saveSurveyResult.save(
         {
           surveyId,
           accountId,

@@ -6,6 +6,12 @@ export const makeFakeSurveyInDB = async (surveyCollection: Collection): Promise<
     answers: [{
       image: 'image',
       answer: 'answer'
+    },
+    {
+      answer: 'other'
+    },
+    {
+      answer: 'no_answer'
     }],
     date: new Date()
   })

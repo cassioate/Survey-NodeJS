@@ -1,5 +1,6 @@
 import { SurveyModel } from '../../../src/domain/models/survey'
 import { SaveSurveyResultParams, SurveyResultModel } from '../../../src/domain/models/survey-result'
+import { LoadSurveyResultById } from '../../../src/domain/usecases/survey-result/load-survey-result'
 import { SaveSurveyResult } from '../../../src/domain/usecases/survey-result/save-survey-result'
 import { LoadSurveyById } from '../../../src/domain/usecases/survey/load-survey-by-id'
 import { makeFakeSurveyModel } from '../../domain/models/mocks/mock-survey'
@@ -21,4 +22,13 @@ export const makeSaveSurveyResultStub = (): SaveSurveyResult => {
     }
   }
   return new SaveSurveyResultRepositoryStub()
+}
+
+export const makeLoadSurveyResultById = (): LoadSurveyResultById => {
+  class LoadSurveyResultByIdStub implements LoadSurveyResultById {
+    async loadBySurveyId (surveyId: string): Promise<SurveyResultModel> {
+      return makeFakeSurveyResultModel()
+    }
+  }
+  return new LoadSurveyResultByIdStub()
 }

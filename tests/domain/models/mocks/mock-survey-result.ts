@@ -13,6 +13,14 @@ export const makeFakeSurveyResultHttpRequest = (): HttpRequest => {
   }
 }
 
+export const makeFakeLoadByIdSurveyResultHttpRequest = (): HttpRequest => {
+  return {
+    params: {
+      surveyId: 'survey_id'
+    }
+  }
+}
+
 export const makeFakeSaveSurveyResultParams = (): SaveSurveyResultParams => {
   return {
     surveyId: 'survey_id',
@@ -24,7 +32,25 @@ export const makeFakeSaveSurveyResultParams = (): SaveSurveyResultParams => {
 
 export const makeFakeSurveyResultModel = (): SurveyResultModel => {
   return {
-    id: 'any_id',
-    ...makeFakeSaveSurveyResultParams()
+    surveyId: 'survey_id',
+    question: 'question',
+    answers: [{
+      image: 'image',
+      answer: 'answer',
+      count: 2,
+      percent: 50
+    }, {
+      image: 'image2',
+      answer: 'answer2',
+      count: 1,
+      percent: 25
+    }, {
+      image: 'image3',
+      answer: 'answer3',
+      count: 1,
+      percent: 25
+    }
+    ],
+    date: new Date()
   }
 }
