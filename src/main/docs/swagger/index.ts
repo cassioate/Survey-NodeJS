@@ -14,12 +14,17 @@ import { surveyAnswerSchema } from './schemas/survey/survey-answer-schema'
 import { surveySchema } from './schemas/survey/survey-schema'
 import { surveyPath } from './paths/survey-path'
 import { surveysSchema } from './schemas/survey/surveys-schema'
+import { surveysResultPath } from './paths/survey-result-path'
+import { surveyResultParamsSchema } from './schemas/survey-results/survey-result-params-schema'
+import { surveyResultAnswerSchema } from './schemas/survey-results/survey-result-answer-schema'
+import { surveyResultSchema } from './schemas/survey-results/survey-result-schema'
+import { surveyParamsSchema } from './schemas/survey/survey-params-schema'
 
 export default {
   openapi: '3.0.0',
   info: {
-    title: 'Clean Node API',
-    description: 'API do curso do Mango para realizar enquetes',
+    title: 'Survey-NodeJS',
+    description: 'API para realizar enquetes',
     version: '1.0.0'
   },
   servers: [{
@@ -33,8 +38,8 @@ export default {
   paths: {
     '/login': loginPath,
     '/signup': signUpPath,
-    '/surveys/': surveyPath
-    // '/api/surveys/{surveyId}/results': surveyResultPath
+    '/surveys/': surveyPath,
+    '/surveys/{surveyId}/results': surveysResultPath
   },
   schemas: {
     // login
@@ -44,9 +49,15 @@ export default {
     signUpSuccess: accessTokenSchema,
 
     // enquete
-    survey: surveySchema,
+    surveyParams: surveyParamsSchema,
     surveyAnswer: surveyAnswerSchema,
     surveys: surveysSchema,
+    survey: surveySchema,
+
+    // reposta enquete
+    surveysResultParams: surveyResultParamsSchema,
+    surveysResultAnswer: surveyResultAnswerSchema,
+    surveysResult: surveyResultSchema,
 
     // errors
     error: errorSchema
