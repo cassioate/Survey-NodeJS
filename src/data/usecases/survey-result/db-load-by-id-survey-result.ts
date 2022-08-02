@@ -1,8 +1,8 @@
 import { SurveyResultModel } from '../../../domain/models/survey-result'
-import { LoadSurveyResult } from '../../../domain/usecases/survey-result/load-survey-result'
+import { LoadSurveyResultById } from '../../../domain/usecases/survey-result/load-survey-result'
 import { LoadByIdSurveyResultRepository } from '../../protocols/db/db-survey-result/load-by-id-survey-result-repository'
 
-export class DbLoadByIdSurveyResult implements LoadSurveyResult {
+export class DbLoadByIdSurveyResult implements LoadSurveyResultById {
   private readonly loadByIdSurveyResultRepository: LoadByIdSurveyResultRepository
 
   constructor (loadByIdSurveyResultRepository: LoadByIdSurveyResultRepository) {
@@ -10,6 +10,7 @@ export class DbLoadByIdSurveyResult implements LoadSurveyResult {
   }
 
   async loadBySurveyId (surveyId: string): Promise<SurveyResultModel> {
-    return await this.loadByIdSurveyResultRepository.loadBySurveyId(surveyId)
+    const result = await this.loadByIdSurveyResultRepository.loadBySurveyId(surveyId)
+    return result
   }
 }

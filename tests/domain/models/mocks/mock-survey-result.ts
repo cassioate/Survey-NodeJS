@@ -13,6 +13,14 @@ export const makeFakeSurveyResultHttpRequest = (): HttpRequest => {
   }
 }
 
+export const makeFakeLoadByIdSurveyResultHttpRequest = (): HttpRequest => {
+  return {
+    params: {
+      surveyId: 'survey_id'
+    }
+  }
+}
+
 export const makeFakeSaveSurveyResultParams = (): SaveSurveyResultParams => {
   return {
     surveyId: 'survey_id',

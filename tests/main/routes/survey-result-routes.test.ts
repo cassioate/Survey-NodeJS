@@ -47,4 +47,25 @@ describe('Survey Result Routes', () => {
         .expect(200)
     })
   })
+
+  // describe('GET /api/surveys/any_id/results', () => {
+  //   test('Should survey add return 403 if user not has a token', async () => {
+  //     await request(app)
+  //       .get('/api/surveys/any_id/results')
+  //       .send({})
+  //       .expect(403)
+  //   })
+
+  //   test('Should survey-results return 200 on success', async () => {
+  //     const accessToken = await makeAccessToken(accountCollection, 3, 'user')
+  //     await insertSurveyInDatabase(surveyCollection)
+  //     const { id } = await findSurveyInDatabase(surveyCollection)
+
+  //     await request(app)
+  //       .get(`/api/surveys/${id}/results`)
+  //       .set('x-access-token', accessToken)
+  //       .send({})
+  //       .expect(200)
+  //   })
+  // })
 })

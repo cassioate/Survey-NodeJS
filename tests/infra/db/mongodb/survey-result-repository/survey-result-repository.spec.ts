@@ -121,5 +121,11 @@ describe('Survey Repository MongoDB', () => {
       expect(result.answers[2].count).toBe(0)
       expect(result.date).toBeTruthy()
     })
+
+    test('Should loadBySurveyId return null', async () => {
+      const sut = new SurveyResultMongoRepository()
+      const result = await sut.loadBySurveyId('62df6c8b63ebdfc3a494da4b')
+      expect(result).toBe(null)
+    })
   })
 })

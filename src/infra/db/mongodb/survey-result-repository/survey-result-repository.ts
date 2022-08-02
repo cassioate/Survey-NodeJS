@@ -29,7 +29,9 @@ export class SurveyResultMongoRepository implements SaveSurveyResultRepository, 
 
     const takeAnswersBySurveyId = await surveyResultCollection.find({ surveyId: new ObjectId(surveyId) }).toArray()
     const takeSurvey = await surveyCollection.findOne({ _id: new ObjectId(surveyId) })
-
+    if (!takeSurvey) {
+      return null
+    }
     const totalOfSurvey = takeAnswersBySurveyId.length
 
     const allAnswers = takeSurvey.answers.map(
@@ -39,7 +41,7 @@ export class SurveyResultMongoRepository implements SaveSurveyResultRepository, 
           image: surveyAnswer.image,
           answer: surveyAnswer.answer,
           count: total,
-          percent: total * 100 / totalOfSurvey
+          percent: (total * 100 / totalOfSurvey) || 0
         }
       }
     )
