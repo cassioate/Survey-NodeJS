@@ -5,8 +5,7 @@ import { makeFakeSurveyResultModel } from '../../domain/models/mocks/mock-survey
 
 export const makeSaveSurveyResultRepositoryStub = (): SaveSurveyResultRepository => {
   class SaveSurveyResultRepositoryStub implements SaveSurveyResultRepository {
-    async save (saveSurveyResult: SaveSurveyResultParams): Promise<SurveyResultModel> {
-      return makeFakeSurveyResultModel()
+    async save (saveSurveyResult: SaveSurveyResultParams): Promise<void> {
     }
   }
 

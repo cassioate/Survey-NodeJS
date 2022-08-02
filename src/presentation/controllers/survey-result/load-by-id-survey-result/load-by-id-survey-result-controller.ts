@@ -5,11 +5,9 @@ import { InvalidParamError } from '../../../errors'
 
 export class LoadBySurveyIdResultController implements Controller {
   private readonly loadSurveyResultById: LoadSurveyResultById
-  // private readonly validation: Validation
 
   constructor (loadSurveyResultById: LoadSurveyResultById) {
     this.loadSurveyResultById = loadSurveyResultById
-    // this.validation = validation
   }
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {

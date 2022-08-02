@@ -5,9 +5,9 @@ import { SaveSurveyResultParams, SurveyResultModel } from '../../../../domain/mo
 import { MongoHelper } from '../helpers/mongo-helper'
 
 export class SurveyResultMongoRepository implements SaveSurveyResultRepository, LoadByIdSurveyResultRepository {
-  async save (saveSurveyResult: SaveSurveyResultParams): Promise<SurveyResultModel> {
+  async save (saveSurveyResult: SaveSurveyResultParams): Promise<void> {
     const surveyResultCollection = await MongoHelper.getCollection('surveyResults')
-    const result = await surveyResultCollection.findOneAndUpdate({
+    await surveyResultCollection.findOneAndUpdate({
       surveyId: new ObjectId(saveSurveyResult.surveyId),
       accountId: new ObjectId(saveSurveyResult.accountId)
     }, {
@@ -19,8 +19,6 @@ export class SurveyResultMongoRepository implements SaveSurveyResultRepository, 
       upsert: true,
       returnDocument: 'after'
     })
-
-    return await this.loadBySurveyId(result.value.surveyId)
   }
 
   async loadBySurveyId (surveyId: string): Promise<SurveyResultModel> {

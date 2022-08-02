@@ -36,7 +36,6 @@ export const insertSurveyInDatabase = async (surveyCollection: Collection): Prom
 
 export const findSurveyInDatabase = async (surveyCollection: Collection): Promise<SurveyModel> => {
   const result = await surveyCollection.findOne({ question: 'question' })
-  console.log(result)
   return result && MongoHelper.map(result)
 }
 
