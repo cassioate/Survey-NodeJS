@@ -33,9 +33,8 @@ export default {
   paths: {
     '/login': loginPath,
     '/signup': signUpPath,
-    // /api/survey/add
-    '/survey/list': surveyPath
-    // '/api/surveys/:surveyId/results'
+    '/surveys/': surveyPath
+    // '/api/surveys/{surveyId}/results': surveyResultPath
   },
   schemas: {
     // login

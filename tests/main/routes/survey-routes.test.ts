@@ -29,10 +29,10 @@ describe('Survey Routes', () => {
     await accountCollection.deleteMany({})
   })
 
-  describe('POST /survey/add', () => {
+  describe('POST /surveys', () => {
     test('Should survey add return 403 if user not has a token', async () => {
       await request(app)
-        .post('/api/survey/add')
+        .post('/api/surveys')
         .send(makeFakeSurveyModelParam())
         .expect(403)
     })
@@ -41,7 +41,7 @@ describe('Survey Routes', () => {
       const accessToken = await makeAccessToken(accountCollection, 1, 'admin')
 
       await request(app)
-        .post('/api/survey/add')
+        .post('/api/surveys')
         .set('x-access-token', accessToken)
         .send(makeFakeSurveyModelParam())
         .expect(204)
@@ -51,7 +51,7 @@ describe('Survey Routes', () => {
       const accessToken = 'invalid_access_token'
 
       await request(app)
-        .post('/api/survey/add')
+        .post('/api/surveys')
         .set('x-access-token', accessToken)
         .send(makeFakeSurveyModelParam())
         .expect(403)
@@ -61,7 +61,7 @@ describe('Survey Routes', () => {
       const accessToken = await makeAccessToken(accountCollection, 3, 'user')
 
       await request(app)
-        .post('/api/survey/add')
+        .post('/api/surveys')
         .set('x-access-token', accessToken)
         .send(makeFakeSurveyModelParam())
         .expect(403)
@@ -71,7 +71,7 @@ describe('Survey Routes', () => {
   describe('GET /survey/list', () => {
     test('Should survey list return 403 if user not has a token', async () => {
       await request(app)
-        .get('/api/survey/list')
+        .get('/api/surveys')
         .expect(403)
     })
 
@@ -80,7 +80,7 @@ describe('Survey Routes', () => {
       const accessToken = await makeAccessToken(accountCollection, 100, 'NO_EXIST')
       await surveyCollection.insertMany([makeFakeSurveyModelParam()])
       await request(app)
-        .get('/api/survey/list')
+        .get('/api/surveys')
         .set('x-access-token', accessToken)
         .expect(403)
     })
@@ -89,7 +89,7 @@ describe('Survey Routes', () => {
       const accessToken = await makeAccessToken(accountCollection, 3, 'user')
       await surveyCollection.insertMany([makeFakeSurveyModelParam()])
       await request(app)
-        .get('/api/survey/list')
+        .get('/api/surveys')
         .set('x-access-token', accessToken)
         .expect(200)
     })
@@ -97,7 +97,7 @@ describe('Survey Routes', () => {
     test('Should survey list be access at lest by one user and return 204 on success, if return a empty array', async () => {
       const accessToken = await makeAccessToken(accountCollection, 3, 'user')
       await request(app)
-        .get('/api/survey/list')
+        .get('/api/surveys')
         .set('x-access-token', accessToken)
         .expect(204)
     })
@@ -105,7 +105,7 @@ describe('Survey Routes', () => {
     test('Should return 404 if route is wrong', async () => {
       const accessToken = await makeAccessToken(accountCollection, 3, 'user')
       await request(app)
-        .get('/api/survey/listWRONG')
+        .get('/api/surveysWRONG')
         .set('x-access-token', accessToken)
         .expect(404)
     })

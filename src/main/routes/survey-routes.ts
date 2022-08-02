@@ -5,6 +5,6 @@ import { makeLoadListSurveyController } from '../factories/controllers/survey/lo
 import { auth } from '../middlewares/auth'
 
 export default (router: Router): void => {
-  router.post('/api/survey/add', auth('admin'), adaptRoute(makeAddSurveyController()))
-  router.get('/api/survey/list', auth('user'), adaptRoute(makeLoadListSurveyController()))
+  router.post('/api/surveys', auth('admin'), adaptRoute(makeAddSurveyController()))
+  router.get('/api/surveys', auth('user'), adaptRoute(makeLoadListSurveyController()))
 }
